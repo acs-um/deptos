@@ -7,7 +7,7 @@ class Departamento(models.Model):
     descripción = models.CharField("Descripción", max_length=255)
     ubicación = "ver como hacer con api maps"
     categorias = models.CharField("Categorías", max_length=25)
-    precio = models.FloatField("Precio", min=0.0, max=1000000.0)
+    precio = models.FloatField("Precio", blank=True)
     propietario = models.ForeignKey(Usuario)
 
 class Foto(models.Model):
