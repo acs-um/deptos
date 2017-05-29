@@ -22,45 +22,21 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         <li class="dropdown active">
-                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Home <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="index.html">Home slider 1</a></li>
-                                <li><a href="index2.html">Home slider 2</a></li>
+                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Home</a>
+                        </li>
 
-                            </ul>
-
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Features <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="typography.html">Typography</a></li>
-                                <li><a href="components.html">Components</a></li>
-                                <li><a href="pricing-box.html">Pricing box</a></li>
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown">Pages</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="fullwidth.html">Full width</a></li>
-                                        <li><a href="right-sidebar.html">Right sidebar</a></li>
-                                        <li><a href="left-sidebar.html">Left sidebar</a></li>
-                                        <li><a href="comingsoon.html">Coming soon</a></li>
-                                        <li><a href="search-result.html">Search result</a></li>
-                                        <li><a href="404.html">404</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="portfolio.html">Portfolio</a></li>
-                        <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Blog <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="blog-rightsidebar.html">Blog right sidebar</a></li>
-                                <li><a href="blog-leftsidebar.html">Blog left sidebar</a></li>
-                                <li><a href="post-rightsidebar.html">Post right sidebar</a></li>
-                                <li><a href="post-leftsidebar.html">Post left sidebar</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="contact.html">Contact</a></li>
+                        {% block user%}
+                            <!--
+                            <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Blog <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="blog-rightsidebar.html">Blog right sidebar</a></li>
+                                    <li><a href="blog-leftsidebar.html">Blog left sidebar</a></li>
+                                    <li><a href="post-rightsidebar.html">Post right sidebar</a></li>
+                                    <li><a href="post-leftsidebar.html">Post left sidebar</a></li>
+                                </ul>
+                            </li>
+                        -->
+                        {% endblock %}
                     </ul>
                 </div>
             </div>
@@ -69,81 +45,18 @@
 
     {% block content %}
 
-    
+
     {% endblock %}
 
 
     <!-- Footer -->
     <footer>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-3 col-lg-3">
-				<div class="widget">
-					<h4>Get in touch with us</h4>
-					<address>
-					<strong>Sailor company Inc</strong><br>
-					 Sailor suite room V124, DB 91<br>
-					 Someplace 71745 Earth </address>
-					<p>
-						<i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
-						<i class="icon-envelope-alt"></i> email@domainname.com
-					</p>
-				</div>
-			</div>
-			<div class="col-sm-3 col-lg-3">
-				<div class="widget">
-					<h4>Information</h4>
-					<ul class="link-list">
-						<li><a href="#">Press release</a></li>
-						<li><a href="#">Terms and conditions</a></li>
-						<li><a href="#">Privacy policy</a></li>
-						<li><a href="#">Career center</a></li>
-						<li><a href="#">Contact us</a></li>
-					</ul>
-				</div>
-
-			</div>
-			<div class="col-sm-3 col-lg-3">
-				<div class="widget">
-					<h4>Pages</h4>
-					<ul class="link-list">
-						<li><a href="#">Press release</a></li>
-						<li><a href="#">Terms and conditions</a></li>
-						<li><a href="#">Privacy policy</a></li>
-						<li><a href="#">Career center</a></li>
-						<li><a href="#">Contact us</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-sm-3 col-lg-3">
-				<div class="widget">
-					<h4>Newsletter</h4>
-					<p>Fill your email and sign up for monthly newsletter to keep updated</p>
-                    <div class="form-group multiple-form-group input-group">
-                        <input type="email" name="email" class="form-control">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-theme btn-add">Subscribe</button>
-                        </span>
-                    </div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div id="sub-footer">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="copyright">
-						<p>&copy; Sailor Theme - All Right Reserved</p>
-                        <div class="credits">
-                            <!--
-                                All the links in the footer should remain intact.
-                                You can delete the links only if you purchased the pro version.
-                                Licensing information: https://bootstrapmade.com/license/
-                                Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Sailor
-                            -->
-                            <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
+						<p>&copy; Deptos - All Right Reserved</p>
 					</div>
 				</div>
 				<div class="col-lg-6">

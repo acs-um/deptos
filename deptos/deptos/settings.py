@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Redirect when login is correct.
+LOGIN_REDIRECT_URL = "/"
+# Redirect when login is not correct.
+LOGIN_URL = '/'
 
 # Application definition
 
@@ -89,7 +93,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es-ar'
 
-TIME_ZONE = 'UTC-3'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 USE_I18N = True
 
