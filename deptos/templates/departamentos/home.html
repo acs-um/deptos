@@ -10,6 +10,8 @@
 <body>
     {% block user%}
         {% if user.is_authenticated %}
+           <li>Hola {{ user }}</li>
+        {% else %}
             <li><a href="{% url 'signup' %}">Registrar</a></li>
             <li><a href="{% url 'login' %}">Ingresar</a></li>
         {% endif %}
