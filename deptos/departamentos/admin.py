@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Departamento, Foto, Comentario
 
-# Register your models here.
+admin.site.register(Departamento)
+admin.site.register(Foto)
+admin.site.register(Comentario)

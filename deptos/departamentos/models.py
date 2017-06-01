@@ -1,24 +1,33 @@
 from django.db import models
 from usuarios.models import Usuario
-
+from django.utils import timezone
 
 
 class Departamento(models.Model):
-    titulo = models.CharField("Título", max_length=50)
-    descripción = models.CharField("Descripción", max_length=255)
-    ubicación = "ver como hacer con api maps"
-    categorias = models.CharField("Categorías", max_length=25)
-    precio = models.FloatField("Precio")
-    propietario = models.ForeignKey(Usuario)
+    titulo = models.CharField(max_length=50)
+    descripción = models.CharField(max_length=255)
+    latitud = models.FloatField(default=0)
+    longitud = models.FloatField(default=0)
+    capacidad = models.IntegerField(default=0)
+    localidad = models.CharField(max_length=50)
+    precio = models.FloatField(default=0)
+    usuario = models.ForeignKey(Usuario)
+
+    def __str__(self):
+        return  self.titulo
 
 class Foto(models.Model):
-    departamento = models.ForeignKey("Departamento", verbose_name="departamento", related_name="fotos")
-    imagen = models.ImageField("Imagen", upload_to='fotos')
-
-
-class Mensaje(models.Model):
-    texto = models.CharField(max_length=255)
-    usuario_emisor = models.ForeignKey(Usuario , related_name="mensajes_enviados")
-    usario_receptor = models.ForeignKey(Usuario , related_name="mensajes_recibidos")
-    fecha_envio = models.DateTimeField(auto_now_add=True)
     departamento = models.ForeignKey(Departamento)
+    imagen = models.ImageField(upload_to='fotos')
+
+    def __str__(self):
+        return  self.departamento
+
+class Comentario(models.Model):
+    texto = models.CharField(max_length=255)
+    emisor = models.ForeignKey(Usuario , related_name="comentario_enviados")
+    fecha_envio = models.DateTimeField(auto_now_add=False);
+    departamento = models.ForeignKey(Departamento)
+
+    def __str__(self):
+        return  self.texto
