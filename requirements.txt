@@ -1,2 +1,4 @@
 Django==1.8
-django-bootstrap3
+django-bootstrap3==8.2.2
+Pillow==4.1.1
+
