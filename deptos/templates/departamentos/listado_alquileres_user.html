@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+<table class="table table-condensed">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Titulo</th>
+			<th>Descripción</th>
+      <th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if alquileres %}
+		{% for alquiler in alquileres %}
+		<tr>
+			<td>{{ alquiler.id }}</td>
+			<td>{{ alquiler.titulo }}</td>
+			<td>{{ alquiler.descripción }}</td>
+			<td>
+				<a class="btn btn-primary" href="#">Editar</a>
+				<a class="btn btn-danger" href="#">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No tienes alquileres creados...</h1>
+		{% endif %}
+	</tbody>
+</table>
+</div>
+{% endblock%}
