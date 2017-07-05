@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/default.css' %}">
     <link rel="stylesheet" href="{% static 'css/lista_alquileres.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/flexslider/flexslider.css' %}" media="screen" />
 </head>
 
 <body>
@@ -86,7 +87,11 @@
 	</div>
 	</footer>
 
-    <script src={% static 'js/jquery-3.2.1.min.js' %} > </script>
-    <script src={% static 'js/bootstrap.min.js' %} > </script>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.min.js' %}" > </script>
+    <!-- Para carousel -->
+    <script src="{% static 'plugins/flexslider/jquery.flexslider-min.js' %}"></script>
+    <script src="{% static 'plugins/flexslider/flexslider.config.js' %}"></script>
+
 </body>
 </html>
