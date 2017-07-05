@@ -8,7 +8,7 @@ from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .forms import DepartamentoForm
-from .models import Departamento
+from .models import Departamento, Foto
 
 def home(request):
     q = ''
@@ -74,3 +74,5 @@ def alquiler_enable(request, id_alquiler):
     messages.success(request, 'El alquiler se ha activado correctamente. Ahora está disponible en la página principal y será visible para todos.')
     return redirect(reverse('alquiler_listado'))
 
+def details(request, pk):
+    return render_to_response('departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk)}, context_instance=RequestContext(request))

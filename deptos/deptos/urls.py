@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^usuarios/reestablecer/notificacion$', password_reset_done, {'template_name':'usuarios/reestablecer/password_reset_done.html'}, name='password_reset_done'),
     url(r'^usuarios/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, {'template_name':'usuarios/reestablecer/password_reset_confirm.html'}, name='password_reset_confirm'),
     url(r'^usuarios/reestablecer/finalizado$', password_reset_complete, {'template_name':'usuarios/reestablecer/password_reset_complete.html'}, name='password_reset_complete'),
-    # Datos de usuario
-    url(r'^usuarios/perfil$', "usuarios.views.perfil", name="perfil")
+    url(r'^usuarios/perfil$', "usuarios.views.perfil", name="perfil"),
+    url(r'^details/(?P<pk>\d+)/$', "departamentos.views.details", name='details'),
 ]
