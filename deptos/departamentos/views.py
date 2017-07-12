@@ -13,7 +13,12 @@ from .models import Departamento
 
 #@login_required()
 def home(request):
-    contexto = Departamento.objects.all().order_by('id')
+    q = ''
+    if "q" in request.GET:
+        q=request.GET.get("q")
+        contexto=Departamento.objects.filter(descripción__icontains=q)
+    else:
+        contexto = Departamento.objects.all().order_by('id')
     return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':contexto}, context_instance=RequestContext(request))
 
 #@login_required()
