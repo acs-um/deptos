@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
 from .forms import SignUpForm
+from .models import Usuario
 
 def signup(request):
     if request.method == 'POST':  # If the form has been submitted...
@@ -30,11 +31,14 @@ def signup(request):
             # Save new user attributes
             user.save()
 
-            return HttpResponseRedirect("/")  # Redirect after POST
+            usuario = Usuario(usuario = user)
+            usuario.save()
+
+            return HttpResponseRedirect("/ingresar/")  # Redirect after POST
     else:
         form = SignUpForm()
-
     data = {
         'form': form,
     }
+
     return render_to_response('usuarios/signup.html', data, context_instance=RequestContext(request))

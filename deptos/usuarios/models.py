@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Usuario(models.Model):
-    direccion = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=25)
+    direccion = models.CharField(max_length=100, null=True, blank=True)
+    telefono = models.CharField(max_length=25, null=True, blank=True)
     usuario = models.OneToOneField(User)
 
     def __str__(self):

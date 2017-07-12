@@ -9,7 +9,7 @@ class DepartamentoForm(forms.ModelForm):
 
 		fields = [
 			'titulo',
-			'descripción',
+			'descripcion',
 			'latitud',
 			'longitud',
 			'capacidad',
@@ -18,7 +18,7 @@ class DepartamentoForm(forms.ModelForm):
 		]
 		labels = {
 			'titulo': 'Título',
-			'descripción': 'Descripción',
+			'descripcion': 'Descripción',
 			'latitud': 'Latitud',
 			'longitud':'Longitud',
 			'capacidad': 'Capacidad',
@@ -27,7 +27,7 @@ class DepartamentoForm(forms.ModelForm):
 		}
 		widgets = {
 			'titulo': forms.TextInput(attrs={'class':'form-control'}),
-			'descripción': forms.TextInput(attrs={'class':'form-control'}),
+			'descripcion': forms.TextInput(attrs={'class':'form-control'}),
 			'latitud': forms.TextInput(attrs={'class':'form-control'}),
 			'longitud': forms.TextInput(attrs={'class':'form-control'}),
 			'capacidad': forms.TextInput(attrs={'class':'form-control'}),

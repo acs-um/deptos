@@ -10,13 +10,11 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .forms import DepartamentoForm
 from .models import Departamento
 
-
-#@login_required()
 def home(request):
     q = ''
     if "q" in request.GET:
         q=request.GET.get("q")
-        contexto=Departamento.objects.filter(descripción__icontains=q)
+        contexto=Departamento.objects.filter(descripcion__icontains=q)
     else:
         contexto = Departamento.objects.all().order_by('id')
     return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':contexto}, context_instance=RequestContext(request))
@@ -30,7 +28,7 @@ def alquiler_nuevo(request):
             departamento.usuario = request.user.usuario
             departamento.save()
             messages.success(request, 'El alquiler se ha publicado correctamente.')
-            return redirect(reverse('departamentos:home'))
+            return redirect(reverse('home'))
     else:
         form = DepartamentoForm()
     return render(request, 'departamentos/departamento_form.html', {'form': form})
