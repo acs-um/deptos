@@ -37,7 +37,8 @@
 					<p>{{ alquiler.descripción }}</p>
 				</div>
         <div class="owner-post">
-					<p><b>Publicado por:</b> {{ user }}</p>
+					<!-- Cambiar el telefono por el username del usuario -->
+					<p><b>Publicado por:</b> {{ alquiler.usuario.telefono }}</p>
 				</div>
         <!--
 				<div class="product-info smart-form">

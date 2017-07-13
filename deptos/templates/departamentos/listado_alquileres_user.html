@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br>
 <div class="container">
-<table class="table table-condensed">
+{% for message in messages %}
+<div class="alert alert-success alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{message}}</strong>
+</div>
+{% endfor %}
+<br>
+  <h3> Mis alquileres publicados </h3>
+<table class="table table-striped">
 	<thead>
 		<tr>
 			<th>#</th>
 			<th>Titulo</th>
-			<th>Descripción</th>
       <th>Acciones</th>
 		</tr>
 	</thead>
@@ -16,18 +22,17 @@
 		{% if alquileres %}
 		{% for alquiler in alquileres %}
 		<tr>
-			<td>{{ alquiler.id }}</td>
+			<td>{{ forloop.counter }}</td>
 			<td>{{ alquiler.titulo }}</td>
-			<td>{{ alquiler.descripción }}</td>
 			<td>
-				<a class="btn btn-primary" href="#">Editar</a>
-				<a class="btn btn-danger" href="#">Eliminar</a>
+				<a class="btn btn-primary" href="{% url 'departamentos:alquiler_editar' alquiler.id %}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'departamentos:alquiler_borrar' alquiler.id %}">Borrar</a>
 			</td>
 		</tr>
 		{% endfor %}
 
 		{% else %}
-		<h1>No tienes alquileres creados...</h1>
+		<h1>Aún no has publicado alquileres...</h1>
 		{% endif %}
 	</tbody>
 </table>
