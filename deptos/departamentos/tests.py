@@ -158,7 +158,11 @@ class DepartamentosActualizarTests(TestCase):
         self.assertTemplateUsed(response, 'departamentos/borrado_alquiler.html')
 
     def test_borrarAlquiler(self):
-
+        user = User.objects.create(username='testuser')
+        user.set_password('1234')
+        user.save()
+        self.client.login(username='testuser', password='12345')
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto nº1..
         Departamento.objects.create(titulo="titulo1", descripción="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
         # Creo depto nº2..
