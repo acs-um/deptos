@@ -18,25 +18,32 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                    <a class="navbar-brand" href="#">Deptos</a>
+                    <a class="navbar-brand" href="{% url 'home' %}">Deptos</a>
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         <li class="dropdown active">
-                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Home</a>
+                            <a href="{% url 'home' %}">INICIO</a>
                         </li>
 
                         {% block user%}
-                            <!--
-                            <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Blog <i class="fa fa-angle-down"></i></a>
+                            {% if not user.is_authenticated %}
+
+                                <li><a href="{% url 'signup' %}">Registrar</a></li>
+                                <li style="line-height: 35px;">|</li>
+                                <li><a href="{% url 'login' %}">Ingresar</a></li>
+
+
+                            {% endif %}
+                            {% if user.is_authenticated %}
+
+                            <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"> {{user.username}} <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="blog-rightsidebar.html">Blog right sidebar</a></li>
-                                    <li><a href="blog-leftsidebar.html">Blog left sidebar</a></li>
-                                    <li><a href="post-rightsidebar.html">Post right sidebar</a></li>
-                                    <li><a href="post-leftsidebar.html">Post left sidebar</a></li>
+                                    <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
                                 </ul>
                             </li>
-                        -->
+
+                            {% endif %}
                         {% endblock %}
                     </ul>
                 </div>
@@ -65,7 +72,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="copyright">
-						<p>&copy; Deptos - All Right Reserved</p>
+						<p>&copy; Deptos - Todos los derechos reservados</p>
 					</div>
 				</div>
 				<div class="col-lg-6">

@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Departamento(models.Model):
     titulo = models.CharField(max_length=50)
-    descripción = models.CharField(max_length=255)
+    descripcion = models.CharField(max_length=255)
     latitud = models.FloatField(default=0)
     longitud = models.FloatField(default=0)
     capacidad = models.IntegerField(default=0)
