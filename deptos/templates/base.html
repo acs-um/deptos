@@ -40,6 +40,14 @@
                         {% endblock %}
                     </ul>
                 </div>
+                {% block buscar%}
+           <div class="container text-center">
+             <form method="get" action="" class="form-inline">
+                 <input type="text" class="form-control" name="q" value="{{ q }}" size="80">
+                 <button type="submit" class="btn btn-info">Buscar</button>
+                 </div>
+               </form>
+             {% endblock %}
             </div>
         </div>
     </header>

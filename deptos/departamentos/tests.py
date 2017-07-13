@@ -158,11 +158,7 @@ class DepartamentosActualizarTests(TestCase):
         self.assertTemplateUsed(response, 'departamentos/borrado_alquiler.html')
 
     def test_borrarAlquiler(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
-        user.save()
-        self.client.login(username='testuser', password='12345')
-        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+
         # Creo depto nº1..
         Departamento.objects.create(titulo="titulo1", descripción="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
         # Creo depto nº2..
@@ -176,3 +172,27 @@ class DepartamentosActualizarTests(TestCase):
         resp = self.client.get(reverse('departamentos:home'))
         self.assertEqual(len(resp.context["alquileres"]), 1)
         self.assertTrue(Departamento.objects.filter(titulo='titulo2').exists())
+        
+class Buscadordeptotest(TestCase):
+
+    def test_search(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        self.client.login(username='testuser', password='12345')
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        # Creo depto n°1..
+        Departamento.objects.create(titulo="titulo1", descripción="descrip1", latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
+        # Creo depto n°2..
+        Departamento.objects.create(titulo="titulo2", descripción="descrip2", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
+        # Creo depto n°3..
+        Departamento.objects.create(titulo="titulo3", descripción="mauricio", latitud=12.000, longitud=8.000,capacidad=1,precio=10000,usuario=usuariotest)
+
+        response = self.client.get("%s?q=m" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),1)
+        self.assertEqual(response.context["alquileres"].first().descripción,"mauricio")
+        response = self.client.get("%s?q=" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
+        response = self.client.get("%s?q=h" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),0)
+
