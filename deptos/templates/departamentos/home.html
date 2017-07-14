@@ -1,22 +1,20 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load staticfiles %}
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HOME</title>
 </head>
+
 <body>
-    {% block user%}
-        {% if not user.is_authenticated %}
-            <li><a href="{% url 'signup' %}">Registrar</a></li>
-            <li><a href="{% url 'login' %}">Ingresar</a></li>
-        {% endif %}
-    {% endblock %}
+
     {% block content %}
     {% include "departamentos/lista_alquileres.html" %}
     {% endblock %}
 
 </body>
+
 </html>
