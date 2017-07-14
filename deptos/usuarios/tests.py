@@ -62,3 +62,25 @@ class LoginTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
+
+class UrlReestablecimientoTests(TestCase):
+
+    def test_urls(self):
+        self.assertEqual(reverse('password_reset'), '/usuarios/reestablecer')
+        self.assertEqual(reverse('password_reset_done'), '/usuarios/reestablecer/notificacion')
+        self.assertEqual(reverse('password_reset_complete'), '/usuarios/reestablecer/finalizado')
+
+    def test_resolve(self):
+        self.assertEqual(resolve('/usuarios/reestablecer').view_name, 'password_reset')
+        self.assertEqual(resolve('/usuarios/reestablecer/notificacion').view_name, 'password_reset_done')
+        self.assertEqual(resolve('/usuarios/reestablecer/finalizado').view_name, 'password_reset_complete')
+
+    def test_templates_used(self):
+        response = self.client.get(reverse('password_reset'))
+        self.assertTemplateUsed(response, 'usuarios/reestablecer/password_reset_form.html')
+
+        response = self.client.get(reverse('password_reset_done'))
+        self.assertTemplateUsed(response, 'usuarios/reestablecer/password_reset_done.html')
+
+        response = self.client.get(reverse('password_reset_complete'))
+        self.assertTemplateUsed(response, 'usuarios/reestablecer/password_reset_complete.html')

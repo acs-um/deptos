@@ -36,6 +36,14 @@ LOGIN_REDIRECT_URL = "/"
 # Redirect when login is not correct.
 LOGIN_URL = "/"
 
+# Reset Password
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'deptosmanagement@gmail.com'
+EMAIL_HOST_PASSWORD = 'management1234'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 # Application definition
 
