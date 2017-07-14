@@ -26,7 +26,7 @@ class DepartamentosCrearTests(TestCase):
         # datos en context de la vista
         # por get, llega el form.
 
-        response = self.client.get(reverse('departamentos:alquiler_crear'))
+        response = self.client.get(reverse('alquiler_crear'))
         self.assertTrue("form" in response.context)
 
         self.assertTrue(isinstance(response.context["form"], DepartamentoForm))
@@ -43,7 +43,7 @@ class DepartamentosCrearTests(TestCase):
         # Creo depto nº2..
         Departamento.objects.create(titulo="titulo2", descripcion="descrip2", latitud=20.000, longitud=20.000,capacidad=2,precio=2000,usuario=usuariotest)
 
-        resp = self.client.get(reverse('departamentos:home'))
+        resp = self.client.get(reverse('home'))
 
         # Debe identificar 2 alquileres creados en el listado...
         self.assertEqual(len(resp.context["alquileres"]), 2)
@@ -99,7 +99,7 @@ class DepartamentosActualizarTests(TestCase):
         alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
 
         # testea que usamos el template 'departamentos/departamento_form.html' al editar...
-        response = self.client.get(reverse('departamentos:alquiler_editar', args=(alquilertest.pk,)))
+        response = self.client.get(reverse('alquiler_editar', args=(alquilertest.pk,)))
         self.assertTemplateUsed(response, 'departamentos/departamento_form.html')
 
     def test_editarAlquiler_context_view(self):
@@ -115,7 +115,7 @@ class DepartamentosActualizarTests(TestCase):
 
         # datos en context de la vista
         # por get, llega el form.
-        response = self.client.get(reverse('departamentos:alquiler_editar', args=(alquilertest.pk,)))
+        response = self.client.get(reverse('alquiler_editar', args=(alquilertest.pk,)))
         self.assertTrue("form" in response.context)
         self.assertTrue(isinstance(response.context["form"], DepartamentoForm))
 
@@ -131,7 +131,7 @@ class DepartamentosActualizarTests(TestCase):
         alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
 
         #Actualizamos datos y obtenemos respuesta exitosa
-        response = self.client.post(reverse('departamentos:alquiler_editar', args=(alquilertest.pk,)), {
+        response = self.client.post(reverse('alquiler_editar', args=(alquilertest.pk,)), {
             'titulo': 'new titulotest',
 			'descripcion': 'new asdtest',
 			'latitud': 12.123,
@@ -158,7 +158,7 @@ class DepartamentosActualizarTests(TestCase):
         alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
 
         # testea que usamos el template 'departamentos/departamento_form.html' al editar...
-        response = self.client.get(reverse('departamentos:alquiler_borrar', args=(alquilertest.pk,)))
+        response = self.client.get(reverse('alquiler_borrar', args=(alquilertest.pk,)))
         self.assertTemplateUsed(response, 'departamentos/borrado_alquiler.html')
 
     def test_borrarAlquiler(self):
@@ -171,13 +171,13 @@ class DepartamentosActualizarTests(TestCase):
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
         # Creo depto nº2..
         Departamento.objects.create(titulo="titulo2", descripcion="descrip2", latitud=20.000, longitud=20.000,capacidad=2,precio=2000,usuario=usuariotest)
-        resp = self.client.get(reverse('departamentos:home'))
+        resp = self.client.get(reverse('home'))
         # Debe identificar 2 alquileres creados en el listado...
         self.assertEqual(len(resp.context["alquileres"]), 2)
         # Borramos uno y deberá actualizarse a 1 la cantidad de alquileres...
         depto = Departamento.objects.get(pk=1)
         depto.delete();
-        resp = self.client.get(reverse('departamentos:home'))
+        resp = self.client.get(reverse('home'))
         self.assertEqual(len(resp.context["alquileres"]), 1)
         self.assertTrue(Departamento.objects.filter(titulo='titulo2').exists())
         
@@ -200,7 +200,7 @@ class Buscadordeptotest(TestCase):
         self.assertEqual(response.context["alquileres"].count(),1)
         self.assertEqual(response.context["alquileres"].first().descripcion,"mauricio")
 
-        response = self.client.get("%s?q=" % reverse("departamentos:home"))
+        response = self.client.get("%s?q=" % reverse("home"))
 
         self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
         response = self.client.get("%s?q=h" % reverse("home"))
