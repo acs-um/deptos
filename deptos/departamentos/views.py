@@ -59,6 +59,7 @@ def alquiler_borrar(request, id_alquiler):
         return redirect('alquiler_listado')
     return render(request, 'departamentos/borrado_alquiler.html', {'alquiler':alquiler})
 
+
 def alquiler_disable(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     alquiler.estado = False
@@ -72,3 +73,4 @@ def alquiler_enable(request, id_alquiler):
     alquiler.save()
     messages.success(request, 'El alquiler se ha activado correctamente. Ahora está disponible en la página principal y será visible para todos.')
     return redirect(reverse('alquiler_listado'))
+

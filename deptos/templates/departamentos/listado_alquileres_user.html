@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+í{% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
@@ -14,7 +14,7 @@
 	<thead>
 		<tr>
 			<th>#</th>
-			<th>Titulo</th>
+			<th>Título</th>
       <th>Estado de Publicación</th>
       <th>Acciones</th>
 		</tr>
@@ -36,9 +36,12 @@
         <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}">Deshabilitar</a>
         {% endif %}
       </td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'alquiler_editar' alquiler.id %}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'alquiler_borrar' alquiler.id %}">Borrar</a>
+			</td>
 		</tr>
 		{% endfor %}
-
 		{% else %}
 		<h1>Aún no has publicado alquileres...</h1>
 		{% endif %}

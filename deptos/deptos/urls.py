@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^registrar/$', 'usuarios.views.signup', name='signup'),
     url(r'^ingresar/$', login, {'template_name': 'usuarios/login.html', }, name="login"),
     url(r'^logout$', logout, {'next_page': '/', }, name="logout"),
-
     #Reset password
     url(r'^usuarios/reestablecer$', password_reset, {'template_name':'usuarios/reestablecer/password_reset_form.html', 'email_template_name':'usuarios/reestablecer/password_reset_email.html'}, name='password_reset'),
     url(r'^usuarios/reestablecer/notificacion$', password_reset_done, {'template_name':'usuarios/reestablecer/password_reset_done.html'}, name='password_reset_done'),
