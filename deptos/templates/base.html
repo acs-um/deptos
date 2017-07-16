@@ -25,24 +25,20 @@
                         <li class="dropdown active">
                             <a href="{% url 'home' %}">INICIO</a>
                         </li>
-
                         {% block user%}
                             {% if not user.is_authenticated %}
-
                                 <li><a href="{% url 'signup' %}">Registrar</a></li>
                                 <li style="line-height: 35px;">|</li>
                                 <li><a href="{% url 'login' %}">Ingresar</a></li>
-
-
                             {% endif %}
                             {% if user.is_authenticated %}
-
                             <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"> {{user.username}} <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="{% url 'alquiler_crear' %}"><strong>Publicar Nuevo Alquiler</strong></a></li>
+                                    <li><a href="{% url 'alquiler_listado' %}">Mis Publicaciones</a></li>
                                     <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
                                 </ul>
                             </li>
-
                             {% endif %}
                         {% endblock %}
                     </ul>
@@ -72,7 +68,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="copyright">
-						<p>&copy; Deptos - Todos los derechos reservados</p>
+						<p>&copy; Deptos - Todos los derechos reservados - 2017</p>
 					</div>
 				</div>
 				<div class="col-lg-6">
