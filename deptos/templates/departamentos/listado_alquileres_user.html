@@ -15,6 +15,7 @@
 		<tr>
 			<th>#</th>
 			<th>Titulo</th>
+      <th>Estado de Publicación</th>
       <th>Acciones</th>
 		</tr>
 	</thead>
@@ -24,10 +25,17 @@
 		<tr>
 			<td>{{ forloop.counter }}</td>
 			<td>{{ alquiler.titulo }}</td>
+      <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
 			<td>
-				<a class="btn btn-primary" href="{% url 'alquiler_editar' alquiler.id %}">Editar</a>
-				<a class="btn btn-danger" href="{% url 'alquiler_borrar' alquiler.id %}">Borrar</a>
-			</td>
+				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}">Editar</a>
+				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}">Borrar</a>
+        {% if alquiler.estado == False %}
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}">Habilitar</a>
+        {% endif %}
+        {% if alquiler.estado == True %}
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}">Deshabilitar</a>
+        {% endif %}
+      </td>
 		</tr>
 		{% endfor %}
 
