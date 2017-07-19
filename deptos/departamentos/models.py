@@ -11,6 +11,7 @@ class Departamento(models.Model):
     capacidad = models.IntegerField(default=0)
     localidad = models.CharField(max_length=50)
     precio = models.FloatField(default=0)
+    estado = models.BooleanField(default=True)
     usuario = models.ForeignKey(Usuario)
 
     def __str__(self):

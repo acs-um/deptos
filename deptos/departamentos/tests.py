@@ -201,3 +201,22 @@ class DepartamentosBorradoTests(TestCase):
         resp = self.client.get(reverse('home'))
         self.assertEqual(len(resp.context["alquileres"]), 1)
         self.assertTrue(Departamento.objects.filter(titulo='titulo2').exists())
+
+class DepartamentoDisableEnableTest(TestCase):
+
+    def test_DisableEnableAlquiler(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        self.client.login(username='testuser', password='12345')
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        # Creo depto nº1...
+        alquilertest=Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
+        #Luego de get a deshabilitar con respuesta exitosa...
+        depto = Departamento.objects.get(pk=1)
+        response = self.client.get(reverse('alquiler_desactivar', args=(depto.pk,)))
+        self.assertEqual(response.status_code, 302)
+        #Activo el alquiler...
+        response = self.client.get(reverse('alquiler_activar', args=(depto.pk,)))
+        self.assertEqual(response.status_code, 302)
+
