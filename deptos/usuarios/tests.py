@@ -34,8 +34,9 @@ class SignupTests(TestCase):
         # Que llegan los datos bien por POST
         # que se crea un user nuevo en la db
         response = self.client.post(reverse('signup'), {
-            'username': "test",
+            'username': "test1",
             'password': "123123",
+            'password_confirmation': "123123",
             'email': "test@g.com",
             'first_name': "Test",
             'last_name': "Last name"
@@ -45,10 +46,10 @@ class SignupTests(TestCase):
         self.assertRedirects(response, "/ingresar/")
 
         #Se comprueba que haya sido creado en la tabla User
-        self.assertEqual(User.objects.filter(username="test").count(), 1)
+        self.assertEqual(User.objects.filter(username="test1").count(), 1)
 
         #Se comprueba que haya sido creado en la tabla Usuario
-        self.assertEqual(Usuario.objects.filter(usuario__username="test").count(), 1)
+        self.assertEqual(Usuario.objects.filter(usuario__username="test1").count(), 1)
 
 class LoginTests(TestCase):
     def setUp(self):
@@ -84,3 +85,28 @@ class UrlReestablecimientoTests(TestCase):
 
         response = self.client.get(reverse('password_reset_complete'))
         self.assertTemplateUsed(response, 'usuarios/reestablecer/password_reset_complete.html')
+
+class ValidacionesRegistrarTests(TestCase):
+
+    # Intento crear un usuario sin setear un campo obligatorio
+    def test_email_obligatorio(self):
+        self.client.post(reverse('signup'), {
+        'username': "usertest",
+        'password': "12345",
+        'password_confirmation': "12345"
+        })
+
+        user = User.objects.filter(username="usertest")
+        self.assertFalse(user.exists())
+
+    # Check password y password_confirmation
+    def test_password_confirmation(self):
+        self.client.post(reverse('signup'), {
+        'username': "usertest",
+        'password': "12345",
+        'password_confirmation': "12346",
+        'email': "test@gmail.com"
+        })
+
+        user = User.objects.filter(username="usertest")
+        self.assertFalse(user.exists())
