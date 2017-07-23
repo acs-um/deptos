@@ -219,4 +219,3 @@ class DepartamentoDisableEnableTest(TestCase):
         #Activo el alquiler...
         response = self.client.get(reverse('alquiler_activar', args=(depto.pk,)))
         self.assertEqual(response.status_code, 302)
-
