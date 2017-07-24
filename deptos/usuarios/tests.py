@@ -110,3 +110,39 @@ class ValidacionesRegistrarTests(TestCase):
 
         user = User.objects.filter(username="usertest")
         self.assertFalse(user.exists())
+
+class EditarDatosUsuarioTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
+
+    def test_urls(self):
+        self.assertEqual(reverse("perfil"), "/usuarios/perfil")
+        self.assertEqual(resolve("/usuarios/perfil").view_name, 'perfil')
+
+    def test_no_login(self):
+        response = self.client.get(reverse("perfil"))
+        self.assertRedirects(response, '/?next=/usuarios/perfil')
+
+    def test_form_edit(self):
+        self.client.login(username="test1", password="12345")
+        response = self.client.post(reverse('perfil'), {
+            'first_name': "user",
+            'last_name': "test",
+            'username': "testuser",
+            'email': "testuser@deptos.com",
+            'direccion': "742 Evergreen Terrace",
+            'telefono': "0303456",
+        })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("perfil"))
+
+        user = Usuario.objects.get(usuario__username="testuser")
+        self.assertEqual(user.usuario.first_name, "user")
+        self.assertEqual(user.usuario.last_name, "test")
+        self.assertEqual(user.usuario.username, "testuser")
+        self.assertEqual(user.usuario.email, "testuser@deptos.com")
+        self.assertEqual(user.direccion, "742 Evergreen Terrace")
+        self.assertEqual(user.telefono, "0303456")
