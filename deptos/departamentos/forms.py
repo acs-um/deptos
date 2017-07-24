@@ -26,11 +26,11 @@ class DepartamentoForm(forms.ModelForm):
             'precio': 'Precio',
 		}
 		widgets = {
-			'titulo': forms.TextInput(attrs={'class':'form-control'}),
-			'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+			'titulo': forms.TextInput(attrs={'class':'form-control','placeholder': 'Ingrese un título para su publicación'}),
+			'descripcion': forms.Textarea(attrs={'class':'form-control','placeholder': 'Ingrese una descripción lo más detallada posible de su publicación...','rows':4, 'style':'resize:none;'}),
 			'latitud': forms.TextInput(attrs={'class':'form-control'}),
 			'longitud': forms.TextInput(attrs={'class':'form-control'}),
-			'capacidad': forms.TextInput(attrs={'class':'form-control'}),
-			'localidad': forms.TextInput(attrs={'class':'form-control'}),
+			'capacidad': forms.Select(attrs={'class':'form-control'}),
+			'localidad': forms.Select(attrs={'class':'form-control'}),
 			'precio': forms.TextInput(attrs={'class':'form-control'}),
 }
