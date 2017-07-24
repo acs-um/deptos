@@ -62,7 +62,7 @@ class DepartamentosCrearTests(TestCase):
 			'latitud': 30.000,
 			'longitud': 10.000,
 			'capacidad': 5,
-			'localidad': 'loc_test',
+			'localidad': 'San Rafael',
             'precio': 6000,
             'usuario': usuariotest,
         })
@@ -150,7 +150,7 @@ class DepartamentosActualizarTests(TestCase):
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
 
         #Creamos un alquiler por default...
-        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
+        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='Junín', precio=10000,usuario=usuariotest)
 
         #Actualizamos datos y obtenemos respuesta exitosa
         response = self.client.post(reverse('alquiler_editar', args=(alquilertest.pk,)), {
@@ -159,7 +159,7 @@ class DepartamentosActualizarTests(TestCase):
 			'latitud': 12.123,
 			'longitud': 23.456,
 			'capacidad': 3,
-            'localidad': 'new localidadtest',
+            'localidad': 'San Rafael',
             'precio': 5000,
             'usuario': usuariotest,
         })
