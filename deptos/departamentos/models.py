@@ -22,7 +22,7 @@ class Foto(models.Model):
     imagen = models.ImageField(upload_to='fotos')
 
     def __str__(self):
-        return  self.departamento
+        return  self.departamento.titulo
 
 class Comentario(models.Model):
     texto = models.CharField(max_length=255)

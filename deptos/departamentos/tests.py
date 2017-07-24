@@ -1,9 +1,12 @@
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
-from .models import Departamento
+from .models import Departamento, Foto, Comentario
 from usuarios.models import Usuario
 from django.test import TestCase
 from django.contrib.auth import logout, login, authenticate
+from PIL import Image
+import tempfile
+from django.test import override_settings
 
 from .forms import DepartamentoForm
 
@@ -219,3 +222,38 @@ class DepartamentoDisableEnableTest(TestCase):
         #Activo el alquiler...
         response = self.client.get(reverse('alquiler_activar', args=(depto.pk,)))
         self.assertEqual(response.status_code, 302)
+
+class DetalleDepartamentosTests(TestCase):
+
+    def test_details(self):
+        self.assertEqual(reverse('details', args=[1]), '/details/1/')
+
+    def test_details_resolve(self):
+        self.assertEqual(resolve('/details/1/').view_name, 'details')
+
+    def test_details_datos(self):
+        #Creo usuario
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        #Creo depto
+        depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
+        #Creo imagen
+        temp_file = tempfile.NamedTemporaryFile()
+        size = (200, 200)
+        color = (255, 0, 0, 0)
+        image = Image.new("RGBA", size, color)
+        image.save(temp_file, 'jpeg')
+        test_image = temp_file
+        #Creo foto
+        foto = Foto.objects.create(departamento=depto, imagen=test_image.name)
+        comment = Comentario.objects.create(texto="Buen depto", emisor=usuariotest, fecha_envio="2017-07-22", departamento=depto)
+        self.assertEqual(len(Foto.objects.all()), 1)
+        self.assertEqual(len(Comentario.objects.all()), 1)
+        self.assertEqual(depto.foto_set.all()[0].imagen, test_image.name)
+        self.assertEqual(depto.comentario_set.all()[0].texto, "Buen depto")
+        self.assertEqual(depto.comentario_set.all()[0].texto, comment.texto)
+        self.assertEqual(foto.departamento.titulo, "titulo1")
+        self.assertEqual(len(Foto.objects.all()), len(depto.foto_set.all()))
+        self.assertEqual(len(Comentario.objects.all()), len(depto.comentario_set.all()))

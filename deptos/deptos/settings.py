@@ -26,6 +26,9 @@ MEDIA_URL = '/media/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7%4em69)x_6fj!a3%+n#&5&c@pnfsol770)7i(ryrmi!iq5pk-'
 
+# Para las fotos
+MEDIA_ROOT = "static/"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
