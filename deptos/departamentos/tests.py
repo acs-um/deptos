@@ -7,6 +7,7 @@ from django.contrib.auth import logout, login, authenticate
 from PIL import Image
 import tempfile
 from django.test import override_settings
+from django.utils import timezone
 
 from .forms import DepartamentoForm
 
@@ -236,6 +237,7 @@ class DetalleDepartamentosTests(TestCase):
         user = User.objects.create(username='testuser')
         user.set_password('12345')
         user.save()
+        self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         #Creo depto
         depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
@@ -248,7 +250,7 @@ class DetalleDepartamentosTests(TestCase):
         test_image = temp_file
         #Creo foto
         foto = Foto.objects.create(departamento=depto, imagen=test_image.name)
-        comment = Comentario.objects.create(texto="Buen depto", emisor=usuariotest, fecha_envio="2017-07-22", departamento=depto)
+        comment = Comentario.objects.create(texto="Buen depto", emisor=usuariotest, fecha_envio=timezone.now(), departamento=depto)
         self.assertEqual(len(Foto.objects.all()), 1)
         self.assertEqual(len(Comentario.objects.all()), 1)
         self.assertEqual(depto.foto_set.all()[0].imagen, test_image.name)
@@ -257,3 +259,20 @@ class DetalleDepartamentosTests(TestCase):
         self.assertEqual(foto.departamento.titulo, "titulo1")
         self.assertEqual(len(Foto.objects.all()), len(depto.foto_set.all()))
         self.assertEqual(len(Comentario.objects.all()), len(depto.comentario_set.all()))
+
+    def test_details_comentario(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        self.client.login(username='testuser', password='12345')
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
+        response = self.client.post(reverse('details', args=[1]), {
+            'texto': 'Comentario de prueba',
+			'emisor': usuariotest,
+			'fecha_envio': timezone.now(),
+			'departamento': depto,
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/details/1/")
+        self.assertEqual(Comentario.objects.filter(texto="Comentario de prueba").count(), 1)

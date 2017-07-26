@@ -11,6 +11,14 @@
 <body>
     {% block content %}
     	<div class="container">
+
+            {% for message in messages %}
+            	<div class="alert alert-success alert-dismissable">
+            		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            		<strong>Felicitaciones!</strong> {{message}}
+            	</div>
+        	{% endfor %}
+
     		<div class="row">
                 <div class="col-lg-12">
                     <div id="main-slider" class="main-slider flexslider">
@@ -37,7 +45,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h4>Descripción</h4>
-                    <p>{{ depto.descripción }}</p>
+                    <p>{{ depto.descripcion }}</p>
                     <p>Capacidad: {{ depto.capacidad }}</p>
                     <p>Localidad: {{ depto.localidad }}</p>
                     <br>
@@ -83,10 +91,9 @@
                         <div class="marginbot30"></div>
 
                         <h4>Deja un comentario</h4>
-                        <form role="form">
-                            <div class="form-group">
-                                <textarea class="form-control" rows="8" placeholder="Escribe un comentario..."></textarea>
-                            </div>
+                        <form role="form" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
                             <button type="submit" class="btn btn-theme btn-md">Comentar</button>
                         </form>
                     </div>

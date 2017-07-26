@@ -7,8 +7,10 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from .forms import DepartamentoForm
+from .forms import DepartamentoForm, ComentarioForm
 from .models import Departamento, Foto
+
+import datetime
 
 def home(request):
     q = ''
@@ -75,4 +77,17 @@ def alquiler_enable(request, id_alquiler):
     return redirect(reverse('alquiler_listado'))
 
 def details(request, pk):
-    return render_to_response('departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk)}, context_instance=RequestContext(request))
+    depto = Departamento.objects.get(pk=pk)
+    if request.method == "POST":
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.emisor = request.user.usuario
+            comentario.fecha_envio = datetime.datetime.now()
+            comentario.departamento = depto
+            comentario.save()
+            messages.success(request, 'El comentario se ha publicado correctamente.')
+            return redirect(reverse('details', args=[pk]))
+    else:
+        form = ComentarioForm()
+    return render(request, 'departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk), 'form': form})
