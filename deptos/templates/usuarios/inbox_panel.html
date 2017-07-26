@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container">
+    <hr>
+    <div class="row">
+        <div class="col-sm-3 col-md-2">
+            <a class="btn btn-success btn-md btn-block" role="button" href="#"><i class="glyphicon glyphicon-edit"></i> Nuevo mensaje</a>
+            <hr>
+            <a class="btn btn-danger btn-sm btn-block" role="button" href="#"><i class="glyphicon glyphicon-remove"></i> Eliminar mensajes</a>
+        </div>
+        <div class="col-sm-9 col-md-10">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
+                </span> Recibidos</a></li>
+                <li><a href="#profile" data-toggle="tab"><span class="glyphicon glyphicon-inbox"></span>
+                    Enviados</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="home">
+                    <div class="list-group">
+                    <div class="list-group-item">
+                      {% if mensajes %}
+                      {% for mensaje in mensajes %}
+                      {% if mensaje.receptor.usuario.username == user.username %}
+
+                          <a class="list-group-item" href="#">
+                          <span class="name" style="min-width: 180px;&#10;display: inline-block;">Recibido de <b>{{ mensaje.emisor.usuario.username }}</b></span> <span>{{ mensaje.texto|truncatechars:65 }}</span>
+                          <span class="text-muted" style="font-size: 11px;"></span> <span class="badge">{{ mensaje.fecha_envio }}</span> <span class="pull-right">
+                          </span></span></a>
+
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade in" id="profile">
+                    <div class="list-group">
+
+                        <div class="list-group-item">
+                          {% if mensajes %}
+                          {% for mensaje in mensajes %}
+                          {% if mensaje.emisor.usuario.username == user.username %}
+
+                          <a class="list-group-item" href="#">
+                          <span class="name" style="min-width: 180px;&#10;display: inline-block;">Enviado a <b>{{ mensaje.receptor.usuario.username }}</b></span><span>{{ mensaje.texto|truncatechars:65 }}</span>
+                          <span class="badge">{{ mensaje.fecha_envio }}</span> <span class="pull-right">
+                          </span></span></a>
+
+
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade in" id="messages">
+                    ...</div>
+                <div class="tab-pane fade in" id="settings">
+                    This tab is empty.</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
