@@ -4,6 +4,7 @@
     <link rel="shortcut icon" href="{% static 'favicon/favicon_deptos.png' %}"/>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'inbox.css' %}">
     <link rel="stylesheet" href="{% static 'css/default.css' %}">
     <link rel="stylesheet" href="{% static 'css/lista_alquileres.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/flexslider/flexslider.css' %}" media="screen" />
@@ -38,7 +39,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'alquiler_crear' %}"><strong>Publicar Nuevo Alquiler</strong></a></li>
                                     <li><a href="{% url 'alquiler_listado' %}">Mis Publicaciones</a></li>
-				    <li><a href="{% url 'perfil' %}">Mi Perfil</a></li> 				
+                                    <li><a href="{% url 'inbox' %}">Mis Mensajes</a></li>
+				                            <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
                                     <li><a href="{% url 'logout' %}"><i>Cerrar Sesión</i></a></li>
                                 </ul>
                             </li>

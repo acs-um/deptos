@@ -146,3 +146,15 @@ class EditarDatosUsuarioTests(TestCase):
         self.assertEqual(user.usuario.email, "testuser@deptos.com")
         self.assertEqual(user.direccion, "742 Evergreen Terrace")
         self.assertEqual(user.telefono, "0303456")
+
+class UsuarioMensajesTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
+
+    def test_signup_templates_used(self):
+        self.client.login(username="test1", password="12345")
+        # que usamos el template 'usuarios/inbox_panel.html'
+        response = self.client.get(reverse('inbox'))
+        self.assertTemplateUsed(response, 'usuarios/inbox_panel.html')
