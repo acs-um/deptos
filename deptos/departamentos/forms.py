@@ -1,5 +1,5 @@
 from django import forms
-from .models import Departamento
+from .models import Departamento, Comentario
 
 
 class DepartamentoForm(forms.ModelForm):
@@ -34,3 +34,18 @@ class DepartamentoForm(forms.ModelForm):
 			'localidad': forms.Select(attrs={'class':'form-control'}),
 			'precio': forms.TextInput(attrs={'class':'form-control'}),
 }
+
+class ComentarioForm(forms.ModelForm):
+
+	class Meta:
+		model = Comentario
+
+		fields = [
+			'texto',
+		]
+		labels = {
+			'texto': '',
+		}
+		widgets = {
+			'texto': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Escribe un comentario...', 'rows':8, 'style':'resize:none;'}),
+		}
