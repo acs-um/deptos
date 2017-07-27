@@ -1,0 +1,47 @@
+í{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+{% for message in messages %}
+<div class="alert alert-success alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{message}}</strong>
+</div>
+{% endfor %}
+<br>
+  <h3> Mis alquileres publicados </h3>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Título</th>
+      <th>Estado de Publicación</th>
+      <th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if alquileres %}
+		{% for alquiler in alquileres %}
+		<tr>
+			<td>{{ forloop.counter }}</td>
+			<td>{{ alquiler.titulo }}</td>
+      <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
+			<td>
+				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}">Editar</a>
+				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}">Borrar</a>
+        {% if alquiler.estado == False %}
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}">Habilitar</a>
+        {% endif %}
+        {% if alquiler.estado == True %}
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}">Deshabilitar</a>
+        {% endif %}
+      </td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<h1>Aún no has publicado alquileres...</h1>
+		{% endif %}
+	</tbody>
+</table>
+</div>
+{% endblock%}
