@@ -42,11 +42,20 @@
                 </div>
                 {% block buscar%}
            <div class="container text-center">
-             <form method="get" action="" class="form-inline">
+             <form method="get" action="">
+               <div  class="form-inline">
                  <input type="text" class="form-control" name="q" value="{{ q }}" size="80">
                  <button type="submit" class="btn btn-info">Buscar</button>
-                 </div>
-               </form>
+              </div>
+              <div  class="form-inline">
+                 <input type="text" class="form-control" name="c" value="{{ c }}" size="20" placeholder="capacidad">
+                 <input type="text" class="form-control" name="p" value="{{ p }}" size="20" placeholder="precio">
+                 <input type="text" class="form-control" name="l" value="{{ l }}" size="20" placeholder="localidad">
+              </div>
+            </form>
+          </div>
+
+
              {% endblock %}
             </div>
         </div>
