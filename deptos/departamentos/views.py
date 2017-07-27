@@ -14,12 +14,26 @@ import datetime
 
 def home(request):
     q = ''
+    # capacidad
+    c = ''
+    # precio
+    p = ''
+    # localidad
+    l = ''
+    departamentos = Departamento.objects.all().order_by('id')
     if "q" in request.GET:
         q=request.GET.get("q")
-        contexto=Departamento.objects.filter(descripcion__icontains=q)
-    else:
-        contexto = Departamento.objects.all().order_by('id')
-    return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':contexto}, context_instance=RequestContext(request))
+        departamentos = departamentos.filter(descripcion__icontains=q)
+    if "c" in request.GET and request.GET.get("c") != '':
+        c=request.GET.get("c")
+        departamentos = departamentos.filter(capacidad=c)
+    if "p" in request.GET and request.GET.get("p") != '':
+        p=request.GET.get("p")
+        departamentos = departamentos.filter(precio__range=(0.0,p))
+    if "l" in request.GET and request.GET.get("l") != '':
+        l=request.GET.get("l")
+        departamentos = departamentos.filter(localidad__icontains=l)
+    return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':departamentos}, context_instance=RequestContext(request))
 
 #@login_required()
 def alquiler_nuevo(request):
