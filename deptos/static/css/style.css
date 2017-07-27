@@ -77,13 +77,8 @@ h1,h2, h3, h4, h5, h6 {
 }
 
 
-
-.row,.row-fluid {
-	margin-bottom:30px;
-}
-
 .row .row,.row-fluid .row-fluid{
-	margin-bottom:30px;
+	/*margin-bottom:30px;*/
 }
 
 .row.nomargin,.row-fluid.nomargin {
@@ -356,7 +351,6 @@ header .navbar {
 }
 
 header .navbar-nav > li  {
-    padding-bottom: 30px;
     padding-top: 30px;
 }
 
@@ -742,7 +736,6 @@ section.callaction {
 ==================================== */
 
 #inner-headline{
-	background:#f2f2f2;
 	position:relative;
 	margin:0;
 	padding:0;

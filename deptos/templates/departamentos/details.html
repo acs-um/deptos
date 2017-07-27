@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Details</title>
+</head>
+<body>
+    {% block content %}
+    	<div class="container">
+
+            {% for message in messages %}
+            	<div class="alert alert-success alert-dismissable">
+            		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            		<strong>Felicitaciones!</strong> {{message}}
+            	</div>
+        	{% endfor %}
+
+    		<div class="row">
+                <div class="col-lg-12">
+                    <div id="main-slider" class="main-slider flexslider">
+                        <h3 class="text-center">{{ depto.titulo }}</h3>
+                        <ul class="slides">
+                            {% for img in depto.foto_set.all %}
+                                <li>
+                                    <img
+                                        src="{% static img.imagen %}"
+                                        alt="Responsive image"
+                                        height=500px; />
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4>Precio: <span style="color: #21c2f8;">${{ depto.precio }}</span></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Descripción</h4>
+                    <p>{{ depto.descripcion }}</p>
+                    <p>Capacidad: {{ depto.capacidad }}</p>
+                    <p>Localidad: {{ depto.localidad }}</p>
+                    <br>
+                    <h4>Información del vendedor</h4>
+                    <ul>
+                        <li><h5>Nombre: {{ depto.usuario.usuario.first_name }}</h5></li>
+                        <li><h5>Telefono: {{ depto.usuario.telefono }}</h5></li>
+                        <li><h5>E-mail: {{ depto.usuario.usuario.email }}</h5></li>
+                        <button type="submit" class="btn btn-theme btn-md">Enviar mensaje</button>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <h4>Ubicación</h4>
+                    <div id="map"
+                        data-lat="{{ depto.latitud }}"
+                        data-long="{{ depto.longitud }}"
+                        style="width:100%; height:400px;" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="comment-area">
+                        <h4>Comentarios</h4>
+                        {% for comment in depto.comentario_set.all %}
+                            <div class="media">
+                                <div class="media-body">
+                                    <div class="media-content">
+                                        <h6>
+                                            {{ comment.emisor }}
+                                            <span>{{ comment.fecha_envio }}</span>
+                                        </h6>
+                                        <p>
+                                            {{ comment.texto }}
+                                            <a href="#" style="margin-left: 5px;">Responder</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="marginbot30"></div>
+
+                        <h4>Deja un comentario</h4>
+                        <form role="form" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-theme btn-md">Comentar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var latitud = document.getElementById('map').getAttribute('data-lat').replace(',','.');
+            var longitud = document.getElementById('map').getAttribute('data-long').replace(',','.');
+
+            function initMap() {
+                var myLatLng = new google.maps.LatLng(latitud, longitud);
+                console.log(latitud);
+                console.log(longitud);
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 17,
+                    scrollwheel: false,
+                    center: myLatLng
+                });
+                var marker = new google.maps.Marker ({
+                    position: myLatLng,
+                    map: map
+                });
+            }
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgvdVTlw50PGz8psy8IjUGzXK4FrLzQzk&callback=initMap">
+        </script>
+    {% endblock %}
+</body>
+</html>

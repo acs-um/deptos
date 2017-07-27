@@ -9,6 +9,7 @@
 
 {% if alquileres %}
 {% for alquiler in alquileres %}
+{% if alquiler.estado == True %}
 <div class="col-xs-12 col-md-6 bootstrap snippets">
 	<!-- product -->
 	<div class="product-content product-wrap clearfix">
@@ -24,20 +25,20 @@
 				<div class="col-md-7 col-sm-12 col-xs-12">
 				<div class="product-deatil">
 						<h5 class="name">
-							<a href="#">
+							<a href="{% url 'details' alquiler.id %}">
 								{{ alquiler.titulo }}<span>{{ alquiler.localidad }}</span>
 							</a>
 						</h5>
 						<p class="price-container">
-							<span>$ {{ alquiler.precio }}</span>
+							<span>$ {{ alquiler.precio|floatformat:0 }}</span>
 						</p>
 						<span class="tag1"></span>
 				</div>
 				<div class="description">
-					<p>{{ alquiler.descripción }}</p>
+					<p>{{ alquiler.descripcion|truncatechars:205 }}</p>
 				</div>
         <div class="owner-post">
-					<p><b>Publicado por:</b> {{ user }}</p>
+					<p>Publicado por:<b> {{ alquiler.usuario }}</b></p>
 				</div>
         <!--
 				<div class="product-info smart-form">
@@ -60,6 +61,7 @@
 		</div>
 	</div>
 	<!-- end product -->
+	{% endif %}
   {% endfor %}
   {% endif %}
 </div>

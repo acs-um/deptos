@@ -26,6 +26,9 @@ MEDIA_URL = '/media/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7%4em69)x_6fj!a3%+n#&5&c@pnfsol770)7i(ryrmi!iq5pk-'
 
+# Para las fotos
+MEDIA_ROOT = "static/"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -34,7 +37,15 @@ ALLOWED_HOSTS = []
 # Redirect when login is correct.
 LOGIN_REDIRECT_URL = "/"
 # Redirect when login is not correct.
-LOGIN_URL = '/'
+LOGIN_URL = "/"
+
+# Reset Password
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'deptosmanagement@gmail.com'
+EMAIL_HOST_PASSWORD = 'management1234'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # Application definition
