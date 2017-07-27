@@ -108,90 +108,32 @@ class Buscadordeptotest(TestCase):
         response = self.client.get("%s?q=h" % reverse("home"))
         self.assertEqual(response.context["alquileres"].count(),0)
 
-class DepartamentosActualizarTests(TestCase):
 
-    def test_editarAlquiler_templates_used(self):
-        #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('1234')
-        user.save()
-        self.client.login(username='testuser', password='12345')
-        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+class FiltroCapacidad(TestCase):
 
-        #Creamos un alquiler...
-        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
-
-        # testea que usamos el template 'departamentos/departamento_form.html' al editar...
-        response = self.client.get(reverse('alquiler_editar', args=(alquilertest.pk,)))
-        self.assertTemplateUsed(response, 'departamentos/departamento_form_edit.html')
-
-    def test_editarAlquiler_context_view(self):
-        #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('1234')
-        user.save()
-        self.client.login(username='testuser', password='12345')
-        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
-
-        #Creamos un alquiler por default...
-        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
-
-        # datos en context de la vista
-        # por get, llega el form.
-        response = self.client.get(reverse('alquiler_editar', args=(alquilertest.pk,)))
-        self.assertTrue("form" in response.context)
-        self.assertTrue(isinstance(response.context["form"], DepartamentoForm))
-
-    def test_editarAlquiler_post(self):
-        #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('1234')
-        user.save()
-        self.client.login(username='testuser', password='12345')
-        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
-
-        #Creamos un alquiler por default...
-        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='Junín', precio=10000,usuario=usuariotest)
-
-        #Actualizamos datos y obtenemos respuesta exitosa
-        response = self.client.post(reverse('alquiler_editar', args=(alquilertest.pk,)), {
-            'titulo': 'new titulotest',
-			'descripcion': 'new asdtest',
-			'latitud': 12.123,
-			'longitud': 23.456,
-			'capacidad': 3,
-            'localidad': 'San Rafael',
-            'precio': 5000,
-            'usuario': usuariotest,
-        })
-        self.assertEqual(response.status_code, 302)
-        #Comprobamos la actualizacion de los datos...
-        self.assertEqual(Departamento.objects.filter(titulo="new titulotest").count(), 1)
-        self.assertTrue(Departamento.objects.filter(precio=5000).exists())
-
-class DepartamentosBorradoTests(TestCase):
-
-    def test_borrarAlquiler_templates_used(self):
-        #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('1234')
-        user.save()
-        self.client.login(username='testuser', password='12345')
-        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
-
-        #Creamos un alquiler por default...
-        alquilertest = Departamento.objects.create(titulo='titulotest', descripcion='asdtest', latitud=11.111, longitud=22.2222, capacidad=4, localidad='localidadtest', precio=10000,usuario=usuariotest)
-
-        # testea que usamos el template 'departamentos/departamento_form.html' al editar...
-        response = self.client.get(reverse('alquiler_borrar', args=(alquilertest.pk,)))
-        self.assertTemplateUsed(response, 'departamentos/borrado_alquiler.html')
-
-    def test_borrarAlquiler(self):
+    def test_capacidad(self):
         user = User.objects.create(username='testuser')
         user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        # Creo depto n°1..
+        Departamento.objects.create(titulo="titulo1", descripción="descrip1", latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
+        # Creo depto n°2..
+        Departamento.objects.create(titulo="titulo2", descripción="descrip2", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
+        # Creo depto n°3..
+        Departamento.objects.create(titulo="titulo3", descripción="mauricio", latitud=12.000, longitud=8.000,capacidad=1,precio=10000,usuario=usuariotest)
+
+        response = self.client.get("%s?c=2" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),1)
+        self.assertEqual(response.context["alquileres"].first().capacidad,2)
+        response = self.client.get("%s?c=" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
+        response = self.client.get("%s?c=5" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),0)
+
+
+
         # Creo depto nº1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
         # Creo depto nº2..
@@ -261,11 +203,54 @@ class DetalleDepartamentosTests(TestCase):
         self.assertEqual(len(Comentario.objects.all()), len(depto.comentario_set.all()))
 
     def test_details_comentario(self):
+
+class FiltroLocalidad(TestCase):
+    
+    def test_localidad(self):
         user = User.objects.create(username='testuser')
         user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+
+        # Creo depto n°1..
+        Departamento.objects.create(titulo="titulo1", descripción="descrip1",localidad="San Rafael",latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
+        # Creo depto n°2..
+        Departamento.objects.create(titulo="titulo2", descripción="descrip2",localidad="Gnral. Alvear", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
+        # Creo depto n°3..
+        Departamento.objects.create(titulo="titulo3", descripción="mauricio",localidad="San Rafael", latitud=12.000, longitud=8.000,capacidad=1,precio=10000,usuario=usuariotest)
+
+        response = self.client.get("%s?l=S" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),2)
+        self.assertEqual(response.context["alquileres"].first().localidad,"San Rafael")
+        response = self.client.get("%s?l=" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
+        response = self.client.get("%s?l=M" % reverse("departamentos:home"))
+        self.assertEqual(response.context["alquileres"].count(),0)
+
+class FiltroPrecio(TestCase):
+
+    def test_precio(self):
+            user = User.objects.create(username='testuser')
+            user.set_password('12345')
+            user.save()
+            self.client.login(username='testuser', password='12345')
+            usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+            # Creo depto n°1..
+            Departamento.objects.create(titulo="titulo1", descripción="descrip1", latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
+            # Creo depto n°2..
+            Departamento.objects.create(titulo="titulo2", descripción="descrip2", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
+            # Creo depto n°3..
+            Departamento.objects.create(titulo="titulo3", descripción="mauricio", latitud=12.000, longitud=8.000,capacidad=1,precio=10000,usuario=usuariotest)
+
+            response = self.client.get("%s?p=15000" % reverse("departamentos:home"))
+            self.assertEqual(response.context["alquileres"].count(),1)
+            self.assertEqual(response.context["alquileres"].first().precio,15000)
+            response = self.client.get("%s?p=" % reverse("departamentos:home"))
+            self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
+            response = self.client.get("%s?p=99999999999" % reverse("departamentos:home"))
+            self.assertEqual(response.context["alquileres"].count(),0)
+
         depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
         response = self.client.post(reverse('details', args=[1]), {
             'texto': 'Comentario de prueba',
@@ -276,3 +261,4 @@ class DetalleDepartamentosTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/details/1/")
         self.assertEqual(Comentario.objects.filter(texto="Comentario de prueba").count(), 1)
+
