@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label for="username">Usuario:</label>
                                 <div class="text-danger"><strong>{{form.username.errors}}</strong></div>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" value="{{form.username.value}}" tabindex="3">
+                                <input type="text" id="username" readonly="true" name="username" class="form-control" placeholder="Usuario" value="{{form.username.value}}" tabindex="3">
                             </div>
 
                         </div>
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-md-12"><input type="submit" value="Aplicar cambios" class="btn btn-default pull-right" tabindex="7"></div>
+                        <div class="col-xs-12 col-md-12"><button type="submit" class="btn btn-success pull-right" tabindex="7"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aplicar Cambios</div>
                     </div>
                 </form>
             </div>

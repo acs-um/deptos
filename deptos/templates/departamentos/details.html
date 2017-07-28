@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +9,25 @@
 </head>
 <body>
     {% block content %}
+    <section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="breadcrumb">
+                        <li><a href="{% url 'home' %}"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                        <li>Alquiler<i class="icon-angle-right"></i></li>
+                        <li class="active">Detalles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
     	<div class="container">
-
             {% for message in messages %}
-            	<div class="alert alert-success alert-dismissable">
-            		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            		<strong>Felicitaciones!</strong> {{message}}
-            	</div>
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Felicitaciones !</strong> {{message}}
+            </div>
         	{% endfor %}
 
     		<div class="row">
@@ -39,7 +50,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h4>Precio: <span style="color: #21c2f8;">${{ depto.precio }}</span></h4>
+                    <h3>Precio: <span style="color: #DF0101;">${{ depto.precio|floatformat:0 }}</span></h4>
                 </div>
             </div>
             <div class="row">
@@ -54,7 +65,7 @@
                         <li><h5>Nombre: {{ depto.usuario.usuario.first_name }}</h5></li>
                         <li><h5>Telefono: {{ depto.usuario.telefono }}</h5></li>
                         <li><h5>E-mail: {{ depto.usuario.usuario.email }}</h5></li>
-                        <button type="submit" class="btn btn-theme btn-md">Enviar mensaje</button>
+                        <button type="submit" class="btn btn-theme btn-md"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar mensaje</button>
                     </ul>
                 </div>
                 <div class="col-lg-6">
@@ -94,7 +105,7 @@
                         <form role="form" method="POST">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit" class="btn btn-theme btn-md">Comentar</button>
+                            <button type="submit" class="btn btn-theme btn-md"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Comentar</button>
                         </form>
                     </div>
                 </div>

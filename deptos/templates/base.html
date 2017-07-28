@@ -20,7 +20,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                    <a class="navbar-brand" href="{% url 'home' %}">Deptos</a>
+                    <a class="navbar-brand" href="{% url 'home' %}"><img
+                        src="{% static  'favicon/favicon_deptos.png' %}"
+                        height=23px; /> Deptos </a>
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
@@ -36,10 +38,10 @@
                             {% if user.is_authenticated %}
                             <li class="dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"> {{user.username}} <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url 'alquiler_crear' %}"><strong>Publicar Nuevo Alquiler</strong></a></li>
-                                    <li><a href="{% url 'alquiler_listado' %}">Mis Publicaciones</a></li>
-				    <li><a href="{% url 'perfil' %}">Mi Perfil</a></li> 				
-                                    <li><a href="{% url 'logout' %}"><i>Cerrar Sesión</i></a></li>
+                                    <li><a href="{% url 'alquiler_crear' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <strong>Publicar Nuevo Alquiler</strong></a></li>
+                                    <li><a href="{% url 'alquiler_listado' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Mis Publicaciones</a></li>
+				                            <li><a href="{% url 'perfil' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mi Perfil</a></li>
+                                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <i>Cerrar Sesión</i></a></li>
                                 </ul>
                             </li>
                             {% endif %}
@@ -49,8 +51,8 @@
                 {% block buscar%}
            <div class="container text-center">
              <form method="get" action="" class="form-inline">
-                 <input type="text" class="form-control" name="q" value="{{ q }}" size="80">
-                 <button type="submit" class="btn btn-info">Buscar</button>
+                 <input type="text" class="form-control" placeholder="Busca un depto por su descripción..." name="q" value="{{ q }}" size="65">
+                 <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
                  </div>
                </form>
              {% endblock %}

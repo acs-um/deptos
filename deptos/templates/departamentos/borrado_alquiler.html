@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
+<br>
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'home' %}"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                    <li><a href="{% url 'alquiler_listado' %}">Mis Publicaciones</a><i class="icon-angle-right"></i></li>
+                    <li class="active">Borrar Alquiler</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
 <div class="container">
 <form method="post">
 	{% csrf_token %}
 	<h3>¿Desea eliminar el registro de "{{ alquiler.titulo }}"?</h3>
-	<button class="btn btn-danger" type="submit">Sí, eliminar</button>
-	<a class= "btn btn-info" href="{% url 'alquiler_listado' %}">Cancelar y volver</a>
+	<button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Sí, eliminar</button>
+	<a class= "btn btn-info" href="{% url 'alquiler_listado' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Cancelar y volver</a>
 </form>
 </div>
 {% endblock %}

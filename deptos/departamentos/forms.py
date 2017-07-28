@@ -27,7 +27,7 @@ class DepartamentoForm(forms.ModelForm):
 		}
 		widgets = {
 			'titulo': forms.TextInput(attrs={'class':'form-control','placeholder': 'Ingrese un título para su publicación'}),
-			'descripcion': forms.Textarea(attrs={'class':'form-control','placeholder': 'Ingrese una descripción lo más detallada posible de su publicación...','rows':4, 'style':'resize:none;'}),
+			'descripcion': forms.Textarea(attrs={'class':'form-control','placeholder': 'Ingrese una descripción lo más detallada posible de su publicación (400 caracteres máx).','rows':4, 'style':'resize:none;'}),
 			'latitud': forms.TextInput(attrs={'class':'form-control'}),
 			'longitud': forms.TextInput(attrs={'class':'form-control'}),
 			'capacidad': forms.Select(attrs={'class':'form-control'}),
