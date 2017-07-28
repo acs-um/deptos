@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
 from .forms import SignUpForm, EditPerfil
-from .models import Usuario
+from .models import Usuario, Mensaje
 
 @login_required
 def perfil(request):
@@ -82,3 +82,7 @@ def signup(request):
     }
 
     return render_to_response('usuarios/signup.html', data, context_instance=RequestContext(request))
+
+def usuario_listadoMensajes(request):
+    mensajes = Mensaje.objects.all().order_by('fecha_envio').reverse()
+    return render(request, 'usuarios/inbox_panel.html', { 'mensajes': mensajes, 'user': request.user })
