@@ -1,15 +1,29 @@
 í{% extends 'base.html' %}
 
 {% block content %}
+
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'home' %}"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                    <li>Mis Publicaciones<i class="icon-angle-right"></i></li>
+                    <li class="active">Listado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="container">
 {% for message in messages %}
-<div class="alert alert-success alert-dismissable">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>{{message}}</strong>
+<div class="alert alert-success alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{message}}
 </div>
 {% endfor %}
 <br>
-  <h3> Mis alquileres publicados </h3>
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -27,13 +41,13 @@
 			<td>{{ alquiler.titulo }}</td>
       <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
 			<td>
-				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}">Editar</a>
-				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}">Borrar</a>
+				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
+				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
         {% if alquiler.estado == False %}
-        <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}">Habilitar</a>
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Habilitar</a>
         {% endif %}
         {% if alquiler.estado == True %}
-        <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}">Deshabilitar</a>
+        <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Deshabilitar</a>
         {% endif %}
       </td>
 		</tr>
