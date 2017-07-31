@@ -3,10 +3,11 @@
 	{% for message in messages %}
 	<div class="alert alert-success alert-dismissible" role="alert">
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  <strong>Felicitaciones</strong> {{message}}
+	  <strong>Felicitaciones</strong> {{message}} Puedes subir fotos para tu depto desde la sección <a href="{% url 'alquiler_listado' %}" class="alert-link">mis publicaciones</a>.
+</div>
 	</div>
 	{% endfor %}
-
+<br>
 {% if alquileres %}
 {% for alquiler in alquileres %}
 {% if alquiler.estado == True %}

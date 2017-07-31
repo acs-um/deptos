@@ -42,7 +42,8 @@
       <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
 			<td>
 				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
-				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
+				<a class="btn btn-info btn-sm" href="{% url 'alquiler_subirImagen' alquiler.id %}"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Subir foto</a>
+        <a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
         {% if alquiler.estado == False %}
         <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Habilitar</a>
         {% endif %}

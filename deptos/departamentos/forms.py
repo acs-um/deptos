@@ -1,5 +1,5 @@
 from django import forms
-from .models import Departamento, Comentario
+from .models import Departamento, Comentario, Foto
 
 
 class DepartamentoForm(forms.ModelForm):
@@ -48,4 +48,15 @@ class ComentarioForm(forms.ModelForm):
 		}
 		widgets = {
 			'texto': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Escribe un comentario...', 'rows':8, 'style':'resize:none;'}),
+		}
+
+class UploadImageForm(forms.ModelForm):
+
+	class Meta:
+		model = Foto
+
+		fields = ['imagen',]
+
+		labels = {
+			'imagen': 'Imagen',
 		}

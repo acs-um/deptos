@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^eliminarArquiler/(?P<id_alquiler>\d+)/$', "departamentos.views.alquiler_borrar", name='alquiler_borrar'),
     url(r'^alquilerEstado/disable/(?P<id_alquiler>\d+)/$', "departamentos.views.alquiler_disable", name='alquiler_desactivar'),
     url(r'^alquilerEstado/enable/(?P<id_alquiler>\d+)/$', "departamentos.views.alquiler_enable", name='alquiler_activar'),
+    url(r'^subirImagen/(?P<id_alquiler>\d+)/$', "departamentos.views.uploadImagen", name='alquiler_subirImagen'),    
     #####FIN-ABM######
     url(r'^admin/', include(admin.site.urls)),
     url(r'^registrar/$', 'usuarios.views.signup', name='signup'),
