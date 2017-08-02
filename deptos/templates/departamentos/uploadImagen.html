@@ -16,7 +16,7 @@
 </section>
 
 <div class="container">
-  <h3>Subir una foto para el departamento: "<span style="color: #DF0101;">{{ alquiler.titulo}}</span>"</h4>
+  <h3>Seleccione una foto para el departamento: "<span style="color: #DF0101;">{{ alquiler.titulo}}</span>"</h4>
     <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form">
         {% csrf_token %}
         {{ form.as_p }}

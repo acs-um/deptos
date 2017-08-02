@@ -18,7 +18,7 @@
 <div class="container">
 <form method="post">
 	{% csrf_token %}
-	<h3>¿Desea eliminar el registro de "{{ alquiler.titulo }}"?</h3>
+	<h3>¿ Desea eliminar el registro de "<span style="color: #DF0101;">{{ alquiler.titulo }}</span>" ?</h3>
 	<button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Sí, eliminar</button>
 	<a class= "btn btn-info" href="{% url 'alquiler_listado' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Cancelar y volver</a>
 </form>
