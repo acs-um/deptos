@@ -107,8 +107,8 @@ def details(request, pk):
     return render(request, 'departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk), 'form': form})
 
 def uploadImagen(request, id_alquiler):
-    if(Foto.objects.filter(departamento_id=id_alquiler).count() == 3):
-        messages.success(request,'No puedes subir más imagenes. Has alcanzado el máximo de fotos para tu publicación (3 máx.)')
+    if(Foto.objects.filter(departamento_id=id_alquiler).count() == 5):
+        messages.success(request,'No puedes subir más imagenes. Has alcanzado el máximo de fotos para tu publicación (5 máx.)')
         return redirect('alquiler_listado')
     alquiler = Departamento.objects.get(id=id_alquiler)
     if request.method == 'POST':

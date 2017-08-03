@@ -24,8 +24,8 @@
 </div>
 {% endfor %}
 <br>
-<table class="table table-striped">
-	<thead>
+<table class="table">
+	<thead class="thead-inverse">
 		<tr>
 			<th>#</th>
 			<th>Título</th>
@@ -37,13 +37,13 @@
 		{% if alquileres %}
 		{% for alquiler in alquileres %}
 		<tr>
-			<td>{{ forloop.counter }}</td>
+			<th scope="row">{{ forloop.counter }}</th>
 			<td>{{ alquiler.titulo }}</td>
       <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
 			<td>
         <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Opciones
+            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Opciones <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'alquiler_editar' alquiler.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
