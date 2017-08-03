@@ -42,15 +42,15 @@ class Departamento(models.Model):
     estado = models.BooleanField(default=True)
     usuario = models.ForeignKey(Usuario)
 
-    def __str__(self):
-        return  self.titulo
+    def __unicode__(self,):
+        return self.titulo
 
 class Foto(models.Model):
     departamento = models.ForeignKey(Departamento)
     imagen = models.ImageField(upload_to='fotos')
 
     def __str__(self):
-        return  self.departamento.titulo
+        return '%s' % (self.departamento.titulo)
 
 class Comentario(models.Model):
     texto = models.CharField(max_length=255)

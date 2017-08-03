@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from .forms import DepartamentoForm, ComentarioForm
+from .forms import DepartamentoForm, ComentarioForm, UploadImageForm
 from .models import Departamento, Foto
 
 import datetime
@@ -105,3 +105,20 @@ def details(request, pk):
     else:
         form = ComentarioForm()
     return render(request, 'departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk), 'form': form})
+
+def uploadImagen(request, id_alquiler):
+    if(Foto.objects.filter(departamento_id=id_alquiler).count() == 5):
+        messages.success(request,'No puedes subir más imagenes. Has alcanzado el máximo de fotos para tu publicación (5 máx.)')
+        return redirect('alquiler_listado')
+    alquiler = Departamento.objects.get(id=id_alquiler)
+    if request.method == 'POST':
+        form = UploadImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            foto = form.save(commit=False)
+            foto.departamento=alquiler
+            form.save()
+            messages.success(request, 'La imagen se ha subido correctamente.')
+            return redirect('alquiler_listado')
+    else:
+        form = UploadImageForm()
+    return render_to_response('departamentos/uploadImagen.html', locals(), context_instance=RequestContext(request))
