@@ -65,7 +65,7 @@ def alquiler_editar(request, id_alquiler):
             form.save()
             messages.success(request, 'El alquiler se ha editado correctamente !')
         return redirect('alquiler_listado')
-    return render(request, 'departamentos/departamento_form_edit.html', {'form':form})
+    return render(request, 'departamentos/departamento_form_edit.html', {'form':form, 'alquiler':alquiler})
 
 def alquiler_borrar(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)

@@ -20,8 +20,48 @@
 <form method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
+  <br>
+  <div class="list-group">
+    <h4>Indique la ubicación de su Depto:</h4>
+    <div class="list-group-item" style="display:inline-block;">
+      Puede utilizar los botones de <strong>"zoom (+ -)"</strong> para obtener una ubicación mucho más precisa de su departamento.
+    <div id="map" style="width: 680px; height: 400px; margin: 5px 5px 20px 5px;" data-lat="{{ alquiler.latitud }}" data-long="{{ alquiler.longitud }}"></div>
+      <b>Latitud:</b> <input type="text" readonly="true" id='lat' size="18" value="{{ alquiler.latitud }}">
+      <b>Longitud:</b> <input type="text" readonly="true" id='lon'size="18" value="{{ alquiler.longitud }}">
+    </div>
+  </div>
 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Guardar</button> <a class="btn btn-info" href="{% url 'alquiler_listado' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Volver a mi lista</a>
 </form>
 </div>
 </div>
+
+<script>
+var latitud = document.getElementById('map').getAttribute('data-lat').replace(',','.');
+var longitud = document.getElementById('map').getAttribute('data-long').replace(',','.');
+
+    function initialize() {
+      var latlng = new google.maps.LatLng(latitud, longitud);
+      var map = new google.maps.Map(document.getElementById('map'), {
+          center: latlng,
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          draggable: true
+      });
+
+      google.maps.event.addListener(marker, 'dragend', function (event) {
+          document.getElementById("id_latitud").value = this.getPosition().lat();
+          document.getElementById("id_longitud").value = this.getPosition().lng();
+          document.getElementById("lat").value = this.getPosition().lat();
+          document.getElementById("lon").value = this.getPosition().lng();
+      });
+
+}
+
+window.onload = function () { initialize() };
+</script>
 {% endblock %}
