@@ -1,12 +1,10 @@
 {% load staticfiles %}
 <div class="container">
-
 	{% for message in messages %}
 	<div class="alert alert-success alert-dismissible" role="alert">
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	  <strong>Felicitaciones</strong> {{message}} Puedes subir fotos para tu depto desde la sección <a href="{% url 'alquiler_listado' %}" class="alert-link">mis publicaciones</a>.
-</div>
-	</div>
+	</div>	
 	{% endfor %}
 <br>
 {% if alquileres %}
@@ -19,9 +17,9 @@
 				<div class="col-md-5 col-sm-12 col-xs-12">
 					<div class="product-image">
 						{% if alquiler.foto_set.all.0.imagen %}
-						<img src="{% static alquiler.foto_set.all.0.imagen %}" class="img-fluid" height=260px; />
+						<img src="{% static alquiler.foto_set.all.0.imagen %}" class="img-fluid" height=250px; />
 						{% else %}
-						<img src="{% static 'img/depto_default.png' %}" class="img-fluid" height=260px; />
+						<img src="{% static 'img/depto_default.png' %}" class="img-fluid" height=250px; />
 						{% endif %}
 					</div>
 				</div>
@@ -38,7 +36,7 @@
 						<span class="tag1"></span>
 				</div>
 				<div class="description">
-				<p>{{ alquiler.descripcion|truncatechars:205 }}</p>
+				<p>{{ alquiler.descripcion|truncatechars:190 }}</p>
 				</div>
         <div class="owner-post">
 					<p>Publicado por:<b> {{ alquiler.usuario.usuario.username }}</b></p>
