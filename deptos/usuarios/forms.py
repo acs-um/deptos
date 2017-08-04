@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django.forms import ModelForm
+from .models import Mensaje
+
 
 class SignUpForm(ModelForm):
     username = forms.CharField(min_length=5)
@@ -62,3 +64,18 @@ class SetPasswordForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
+
+class MensajeForm(forms.ModelForm):
+
+	class Meta:
+		model = Mensaje
+
+		fields = [
+			'texto',
+		]
+		labels = {
+			'texto': 'Mensaje',
+		}
+		widgets = {
+			'texto': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Escribe un mensaje...', 'rows':8, 'style':'resize:none;'}),
+		}

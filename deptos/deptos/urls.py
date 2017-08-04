@@ -25,5 +25,8 @@ urlpatterns = [
     url(r'^usuarios/reestablecer/finalizado$', password_reset_complete, {'template_name':'usuarios/reestablecer/password_reset_complete.html'}, name='password_reset_complete'),
     url(r'^usuarios/perfil$', "usuarios.views.perfil", name="perfil"),
     url(r'^usuarios/inboxPanel$', "usuarios.views.usuario_listadoMensajes", name="inbox"),
+    #Detalles Alquiler
     url(r'^details/(?P<pk>\d+)/$', "departamentos.views.details", name='details'),
+    url(r'^details/comentario/(?P<pk>\d+)/$', "departamentos.views.details_comentario", name='details_comentario'),
+    url(r'^details/mensaje/(?P<pk>\d+)/$', "departamentos.views.details_mensaje", name='details_mensaje'),
 ]

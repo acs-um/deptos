@@ -8,6 +8,7 @@ from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .forms import DepartamentoForm, ComentarioForm, UploadImageForm
+from usuarios.forms import MensajeForm
 from .models import Departamento, Foto
 
 import datetime
@@ -75,7 +76,6 @@ def alquiler_borrar(request, id_alquiler):
         return redirect('alquiler_listado')
     return render(request, 'departamentos/borrado_alquiler.html', {'alquiler':alquiler})
 
-
 def alquiler_disable(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     alquiler.estado = False
@@ -91,20 +91,39 @@ def alquiler_enable(request, id_alquiler):
     return redirect(reverse('alquiler_listado'))
 
 def details(request, pk):
+    form1 = ComentarioForm()
+    form2 = MensajeForm()
+    data = {
+        'user': request.user,
+        'depto': Departamento.objects.get(pk=pk),
+        'form1': form1,
+        'form2': form2,
+    }
+    return render(request, 'departamentos/details.html', data)
+
+def details_comentario(request, pk):
     depto = Departamento.objects.get(pk=pk)
-    if request.method == "POST":
-        form = ComentarioForm(request.POST)
-        if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.emisor = request.user.usuario
-            comentario.fecha_envio = datetime.datetime.now()
-            comentario.departamento = depto
-            comentario.save()
-            messages.success(request, 'El comentario se ha publicado correctamente.')
-            return redirect(reverse('details', args=[pk]))
-    else:
-        form = ComentarioForm()
-    return render(request, 'departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk), 'form': form})
+    form = ComentarioForm(request.POST)
+    if form.is_valid():
+        comentario = form.save(commit=False)
+        comentario.emisor = request.user.usuario
+        comentario.fecha_envio = datetime.datetime.now()
+        comentario.departamento = depto
+        comentario.save()
+        messages.success(request, 'El comentario se ha publicado correctamente.')
+        return redirect(reverse('details', args=[pk]))
+
+def details_mensaje(request, pk):
+    depto = Departamento.objects.get(pk=pk)
+    form = MensajeForm(request.POST)
+    if form.is_valid():
+        mensaje = form.save(commit=False)
+        mensaje.emisor = request.user.usuario
+        mensaje.receptor = depto.usuario
+        mensaje.fecha_envio = datetime.datetime.now()
+        mensaje.save()
+        messages.success(request, 'El mensaje se ha enviado correctamente.')
+        return redirect(reverse('details', args=[pk]))
 
 def uploadImagen(request, id_alquiler):
     if(Foto.objects.filter(departamento_id=id_alquiler).count() == 5):
