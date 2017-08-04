@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
+from .models import Departamento, Foto, LOCALIDAD
 from .forms import DepartamentoForm, ComentarioForm, UploadImageForm
 from usuarios.forms import MensajeForm
-from .models import Departamento, Foto
+
 
 import datetime
 
@@ -34,7 +34,9 @@ def home(request):
     if "l" in request.GET and request.GET.get("l") != '':
         l=request.GET.get("l")
         departamentos = departamentos.filter(localidad__icontains=l)
-    return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':departamentos}, context_instance=RequestContext(request))
+
+    LOCALIDAD=('Mendoza (Capital)','General Alvear','Godoy Cruz','Guaymallén','Junín','La Paz','Las Heras','Lavalle','Luján de Cuyo','Maipú','Malargüe','Rivadavia','San Carlos','San Rafael','Santa Rosa','Tunuyán','Tupungato')
+    return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':departamentos, "localidad":LOCALIDAD }, context_instance=RequestContext(request))
 
 #@login_required()
 def alquiler_nuevo(request):
