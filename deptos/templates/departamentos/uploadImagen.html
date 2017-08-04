@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'home' %}"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                    <li><a href="{% url 'alquiler_listado' %}">Mis Publicaciones<i class="icon-angle-right"></i></a></li>
+                    <li class="active">Subir Foto</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+  <h3>Seleccione una foto para el departamento: "<span style="color: #DF0101;">{{ alquiler.titulo}}</span>"</h4>
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <br>
+    <button type="submit" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Subir</button>
+    </form>
+</div>
+{% endblock %}

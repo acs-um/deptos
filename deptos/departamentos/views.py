@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .models import Departamento, Foto, LOCALIDAD
+from .forms import DepartamentoForm, ComentarioForm, UploadImageForm
+from usuarios.forms import MensajeForm
 
-from .forms import DepartamentoForm, ComentarioForm
-from .models import Departamento, Foto, LOCALIDAD, CAPACIDAD
 
 import datetime
 
@@ -67,7 +68,7 @@ def alquiler_editar(request, id_alquiler):
             form.save()
             messages.success(request, 'El alquiler se ha editado correctamente !')
         return redirect('alquiler_listado')
-    return render(request, 'departamentos/departamento_form_edit.html', {'form':form})
+    return render(request, 'departamentos/departamento_form_edit.html', {'form':form, 'alquiler':alquiler})
 
 def alquiler_borrar(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
@@ -76,7 +77,6 @@ def alquiler_borrar(request, id_alquiler):
         messages.success(request, 'El alquiler se ha eliminado correctamente !')
         return redirect('alquiler_listado')
     return render(request, 'departamentos/borrado_alquiler.html', {'alquiler':alquiler})
-
 
 def alquiler_disable(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
@@ -93,17 +93,53 @@ def alquiler_enable(request, id_alquiler):
     return redirect(reverse('alquiler_listado'))
 
 def details(request, pk):
+    form1 = ComentarioForm()
+    form2 = MensajeForm()
+    data = {
+        'user': request.user,
+        'depto': Departamento.objects.get(pk=pk),
+        'form1': form1,
+        'form2': form2,
+    }
+    return render(request, 'departamentos/details.html', data)
+
+def details_comentario(request, pk):
     depto = Departamento.objects.get(pk=pk)
-    if request.method == "POST":
-        form = ComentarioForm(request.POST)
+    form = ComentarioForm(request.POST)
+    if form.is_valid():
+        comentario = form.save(commit=False)
+        comentario.emisor = request.user.usuario
+        comentario.fecha_envio = datetime.datetime.now()
+        comentario.departamento = depto
+        comentario.save()
+        messages.success(request, 'El comentario se ha publicado correctamente.')
+        return redirect(reverse('details', args=[pk]))
+
+def details_mensaje(request, pk):
+    depto = Departamento.objects.get(pk=pk)
+    form = MensajeForm(request.POST)
+    if form.is_valid():
+        mensaje = form.save(commit=False)
+        mensaje.emisor = request.user.usuario
+        mensaje.receptor = depto.usuario
+        mensaje.fecha_envio = datetime.datetime.now()
+        mensaje.save()
+        messages.success(request, 'El mensaje se ha enviado correctamente.')
+        return redirect(reverse('details', args=[pk]))
+
+def uploadImagen(request, id_alquiler):
+    if(Foto.objects.filter(departamento_id=id_alquiler).count() == 5):
+        messages.success(request,'No puedes subir más imagenes. Has alcanzado el máximo de fotos para tu publicación (5 máx.)')
+        return redirect('alquiler_listado')
+    alquiler = Departamento.objects.get(id=id_alquiler)
+    if request.method == 'POST':
+        form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.emisor = request.user.usuario
-            comentario.fecha_envio = datetime.datetime.now()
-            comentario.departamento = depto
-            comentario.save()
-            messages.success(request, 'El comentario se ha publicado correctamente.')
-            return redirect(reverse('details', args=[pk]))
+            foto = form.save(commit=False)
+            foto.departamento=alquiler
+            form.save()
+            messages.success(request, 'La imagen se ha subido correctamente.')
+            return redirect('alquiler_listado')
     else:
-        form = ComentarioForm()
-    return render(request, 'departamentos/details.html', {'user': request.user, 'depto': Departamento.objects.get(pk=pk), 'form': form})
+        form = UploadImageForm()
+    return render_to_response('departamentos/uploadImagen.html', locals(), context_instance=RequestContext(request))

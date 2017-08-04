@@ -1,12 +1,12 @@
+{% load staticfiles %}
 <div class="container">
-
 	{% for message in messages %}
 	<div class="alert alert-success alert-dismissible" role="alert">
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  <strong>Felicitaciones</strong> {{message}}
-	</div>
+	  <strong>Felicitaciones</strong> {{message}} Puedes subir fotos para tu depto desde la sección <a href="{% url 'alquiler_listado' %}" class="alert-link">mis publicaciones</a>.
+	</div>	
 	{% endfor %}
-
+<br>
 {% if alquileres %}
 {% for alquiler in alquileres %}
 {% if alquiler.estado == True %}
@@ -16,10 +16,11 @@
 		<div class="row">
 				<div class="col-md-5 col-sm-12 col-xs-12">
 					<div class="product-image">
-						<img src="http://images.locanto.com.mx/1518359064/RENTO-DEPARTAMENTO-AMUEBLADO-EN-CULIACAN-IDEAL-PARA-ESTUDIANTES_5.jpg" alt="300x300" class="img-responsive">
-						<!--<span class="tag2 hot">
-							NEW
-						</span> -->
+						{% if alquiler.foto_set.all.0.imagen %}
+						<img src="{% static alquiler.foto_set.all.0.imagen %}" class="img-fluid" height=250px; />
+						{% else %}
+						<img src="{% static 'img/depto_default.png' %}" class="img-fluid" height=250px; />
+						{% endif %}
 					</div>
 				</div>
 				<div class="col-md-7 col-sm-12 col-xs-12">
@@ -35,10 +36,10 @@
 						<span class="tag1"></span>
 				</div>
 				<div class="description">
-				<p>{{ alquiler.descripcion|truncatechars:205 }}</p>
+				<p>{{ alquiler.descripcion|truncatechars:190 }}</p>
 				</div>
         <div class="owner-post">
-					<p>Publicado por:<b> {{ alquiler.usuario }}</b></p>
+					<p>Publicado por:<b> {{ alquiler.usuario.usuario.username }}</b></p>
 				</div>
         <!--
 				<div class="product-info smart-form">

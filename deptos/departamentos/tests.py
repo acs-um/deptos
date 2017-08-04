@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 from .models import Departamento, Foto, Comentario
-from usuarios.models import Usuario
+from usuarios.models import Usuario, Mensaje
 from django.test import TestCase
 from django.contrib.auth import logout, login, authenticate
 from PIL import Image
@@ -9,7 +9,8 @@ import tempfile
 from django.test import override_settings
 from django.utils import timezone
 
-from .forms import DepartamentoForm
+from .forms import DepartamentoForm, ComentarioForm
+from usuarios.forms import MensajeForm
 
 class UrlDepartamentosTests(TestCase):
 
@@ -260,22 +261,50 @@ class DetalleDepartamentosTests(TestCase):
         self.assertEqual(len(Foto.objects.all()), len(depto.foto_set.all()))
         self.assertEqual(len(Comentario.objects.all()), len(depto.comentario_set.all()))
 
+        response = self.client.get(reverse('details', args=[1]))
+        self.assertTrue("form1" in response.context)
+        self.assertTrue(isinstance(response.context["form1"], ComentarioForm))
+        self.assertTrue("form2" in response.context)
+        self.assertTrue(isinstance(response.context["form2"], MensajeForm))
+
     def test_details_comentario(self):
         user = User.objects.create(username='testuser')
         user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
-        depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
-        response = self.client.post(reverse('details', args=[1]), {
+        depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000, capacidad=1, precio=1000, usuario=usuariotest)
+        response = self.client.post(reverse('details_comentario', args=[1]), {
             'texto': 'Comentario de prueba',
-			      'emisor': usuariotest,
-			      'fecha_envio': timezone.now(),
-			      'departamento': depto,
+			'emisor': usuariotest,
+			'fecha_envio': timezone.now(),
+            'departamento': depto,
         })
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/details/1/")
         self.assertEqual(Comentario.objects.filter(texto="Comentario de prueba").count(), 1)
+
+    def test_details_mensaje(self):
+        user1 = User.objects.create(username='testuser1')
+        user1.set_password('12345')
+        user1.save()
+        user2 = User.objects.create(username='testuser2')
+        user2.set_password('12345')
+        user2.save()
+        self.client.login(username='testuser1', password='12345')
+        usuariotest1 = Usuario.objects.create(telefono="333333", direccion="dir_test1", usuario=user1)
+        usuariotest2 = Usuario.objects.create(telefono="333332", direccion="dir_test2", usuario=user2)
+        Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000, capacidad=1, precio=1000, usuario=usuariotest1)
+        response = self.client.post(reverse('details_mensaje', args=[1]), {
+            'texto': 'Mensaje de prueba',
+			'emisor': usuariotest1,
+            'receptor': usuariotest2,
+			'fecha_envio': timezone.now(),
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/details/1/")
+        self.assertEqual(Mensaje.objects.filter(texto="Mensaje de prueba").count(), 1)
+
 class Buscadordeptotest(TestCase):
 
     def test_search(self):
@@ -348,22 +377,22 @@ class FiltroLocalidad(TestCase):
 class FiltroPrecio(TestCase):
 
     def test_precio(self):
-            user = User.objects.create(username='testuser')
-            user.set_password('12345')
-            user.save()
-            self.client.login(username='testuser', password='12345')
-            usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
-            # Creo depto n°1..
-            Departamento.objects.create(titulo="titulo1", descripcion="descrip1", localidad="San Rafael", latitud=13.000, longitud=7.000,capacidad=1,precio=10000,usuario=usuariotest)
-            # Creo depto n°2..
-            Departamento.objects.create(titulo="titulo2", descripcion="descrip2", localidad="San Rafael", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
-            # Creo depto n°3..
-            Departamento.objects.create(titulo="titulo3", descripcion="mauricio", localidad="San Rafael", latitud=12.000, longitud=8.000,capacidad=1,precio=15000,usuario=usuariotest)
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        self.client.login(username='testuser', password='12345')
+        usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
+        # Creo depto n°1..
+        Departamento.objects.create(titulo="titulo1", descripcion="descrip1", localidad="San Rafael", latitud=13.000, longitud=7.000,capacidad=1,precio=10000,usuario=usuariotest)
+        # Creo depto n°2..
+        Departamento.objects.create(titulo="titulo2", descripcion="descrip2", localidad="San Rafael", latitud=21.000, longitud=9.000,capacidad=2,precio=20000,usuario=usuariotest)
+        # Creo depto n°3..
+        Departamento.objects.create(titulo="titulo3", descripcion="mauricio", localidad="San Rafael", latitud=12.000, longitud=8.000,capacidad=1,precio=15000,usuario=usuariotest)
 
-            response = self.client.get("%s?p=15000" % reverse("home"))
-            self.assertEqual(response.context["alquileres"].count(),2)
-            self.assertEqual(response.context["alquileres"].first().precio,10000)
-            response = self.client.get("%s?p=" % reverse("home"))
-            self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
-            response = self.client.get("%s?p=25000" % reverse("home"))
-            self.assertEqual(response.context["alquileres"].count(),3)
+        response = self.client.get("%s?p=15000" % reverse("home"))
+        self.assertEqual(response.context["alquileres"].count(),2)
+        self.assertEqual(response.context["alquileres"].first().precio,10000)
+        response = self.client.get("%s?p=" % reverse("home"))
+        self.assertEqual(response.context["alquileres"].count(),Departamento.objects.count())
+        response = self.client.get("%s?p=25000" % reverse("home"))
+        self.assertEqual(response.context["alquileres"].count(), 3)

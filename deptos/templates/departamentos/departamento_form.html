@@ -21,8 +21,48 @@
 <form method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
+<br>
+<div class="list-group">
+  <h4>Indique la ubicación de su Depto:</h4>
+  <div class="list-group-item" style="display:inline-block;">
+    Puede utilizar los botones de <strong>"zoom (+ -)"</strong> para obtener una ubicación mucho más precisa de su departamento.
+    <div id="map" style="width: 680px; height: 400px; margin: 5px 5px 20px 5px;" data-lat="-33.65120829920497" data-long="-68.44482421875"></div>
+    <b>Latitud:</b> <input type="text" readonly="true" id='lat' size="18" value="-33.65120829920497">
+    <b>Longitud:</b> <input type="text" readonly="true" id='lon'size="18" value="-68.44482421875">
+  </div>
+</div>
 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Publicar</button> <a class="btn btn-info" href="{% url 'home' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Volver al inicio</a>
 </form>
 </div>
 </div>
+
+<script>
+var latitud = document.getElementById('map').getAttribute('data-lat').replace(',','.');
+var longitud = document.getElementById('map').getAttribute('data-long').replace(',','.');
+
+    function initialize() {
+      var latlng = new google.maps.LatLng(latitud, longitud);
+      var map = new google.maps.Map(document.getElementById('map'), {
+          center: latlng,
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          draggable: true
+      });
+
+      google.maps.event.addListener(marker, 'dragend', function (event) {
+          document.getElementById("id_latitud").value = this.getPosition().lat();
+          document.getElementById("id_longitud").value = this.getPosition().lng();
+          document.getElementById("lat").value = this.getPosition().lat();
+          document.getElementById("lon").value = this.getPosition().lng();
+      });
+
+}
+
+window.onload = function () { initialize() };
+</script>
 {% endblock %}

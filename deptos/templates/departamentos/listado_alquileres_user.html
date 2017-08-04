@@ -24,31 +24,39 @@
 </div>
 {% endfor %}
 <br>
-<table class="table table-striped">
-	<thead>
+<table class="table">
+	<thead class="thead-inverse">
 		<tr>
 			<th>#</th>
 			<th>Título</th>
       <th>Estado de Publicación</th>
-      <th>Acciones</th>
+      <th></th>
 		</tr>
 	</thead>
 	<tbody>
 		{% if alquileres %}
 		{% for alquiler in alquileres %}
 		<tr>
-			<td>{{ forloop.counter }}</td>
+			<th scope="row">{{ forloop.counter }}</th>
 			<td>{{ alquiler.titulo }}</td>
       <td>{% if alquiler.estado == True %} Activo {% endif %} {% if alquiler.estado == False %} Inactivo {% endif %}</td>
 			<td>
-				<a class="btn btn-primary btn-sm" href="{% url 'alquiler_editar' alquiler.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
-				<a class="btn btn-danger btn-sm" href="{% url 'alquiler_borrar' alquiler.id %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
-        {% if alquiler.estado == False %}
-        <a class="btn btn-default btn-xs" href="{% url 'alquiler_activar' alquiler.id %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Habilitar</a>
-        {% endif %}
-        {% if alquiler.estado == True %}
-        <a class="btn btn-default btn-xs" href="{% url 'alquiler_desactivar' alquiler.id %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Deshabilitar</a>
-        {% endif %}
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Opciones <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'alquiler_editar' alquiler.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
+                </li><li><a class="dropdown-item" href="{% url 'alquiler_subirImagen' alquiler.id  %}"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Subir imagen</a>
+                {% if alquiler.estado == False %}
+                </li><li><a class="dropdown-item" href="{% url 'alquiler_activar' alquiler.id %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Habilitar</a>
+                {% endif %}
+                {% if alquiler.estado == True %}
+                </li><li><a class="dropdown-item" href="{% url 'alquiler_desactivar' alquiler.id %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Deshabilitar</a>
+                {% endif %}
+               </li><li><a class="dropdown-item" href="{% url 'alquiler_borrar' alquiler.id %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar</a></li>
+            </div>
+        </div>
       </td>
 		</tr>
 		{% endfor %}
