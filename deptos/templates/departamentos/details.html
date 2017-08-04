@@ -107,13 +107,11 @@
                         <h4>Deja un comentario</h4>
                         <form role="form" action="{% url 'details_comentario' depto.id %}" method="POST">
                             {% csrf_token %}
-<<<<<<< 5b8d9db57e546b89497f2643d5d285e145ad0fce
-                            {{ form.as_p }}
-                            <button type="submit" class="btn btn-theme btn-md"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Comentar</button>
-=======
                             {{ form1.as_p }}
-                            <button type="submit" class="btn btn-theme btn-md" name="btn_comentario">Comentar</button>
->>>>>>> refs #58 implemento boton 'enviar mensaje' en publicaciones
+                            <button type="submit" class="btn btn-theme btn-md">
+                                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                                Comentar
+                            </button>
                         </form>
                     </div>
                 </div>
