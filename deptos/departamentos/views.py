@@ -38,7 +38,7 @@ def home(request):
     LOCALIDAD=('Mendoza (Capital)','General Alvear','Godoy Cruz','Guaymallén','Junín','La Paz','Las Heras','Lavalle','Luján de Cuyo','Maipú','Malargüe','Rivadavia','San Carlos','San Rafael','Santa Rosa','Tunuyán','Tupungato')
     return render_to_response('departamentos/home.html', {'user': request.user, 'alquileres':departamentos, "localidad":LOCALIDAD }, context_instance=RequestContext(request))
 
-#@login_required()
+@login_required()
 def alquiler_nuevo(request):
     if request.method == "POST":
         form = DepartamentoForm(request.POST)
@@ -52,12 +52,14 @@ def alquiler_nuevo(request):
         form = DepartamentoForm()
     return render(request, 'departamentos/departamento_form.html', {'form': form})
 
+@login_required()
 def alquiler_lista(request):
     user = request.user.usuario
     alquileres = Departamento.objects.filter(usuario=user)
     contexto = {'alquileres':alquileres}
     return render(request, 'departamentos/listado_alquileres_user.html', contexto)
 
+@login_required()
 def alquiler_editar(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     if request.method == 'GET':
@@ -70,6 +72,7 @@ def alquiler_editar(request, id_alquiler):
         return redirect('alquiler_listado')
     return render(request, 'departamentos/departamento_form_edit.html', {'form':form, 'alquiler':alquiler})
 
+@login_required()
 def alquiler_borrar(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     if request.method == 'POST':
@@ -78,6 +81,7 @@ def alquiler_borrar(request, id_alquiler):
         return redirect('alquiler_listado')
     return render(request, 'departamentos/borrado_alquiler.html', {'alquiler':alquiler})
 
+@login_required()
 def alquiler_disable(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     alquiler.estado = False
@@ -85,6 +89,7 @@ def alquiler_disable(request, id_alquiler):
     messages.success(request, 'El alquiler se ha desactivado correctamente. No estará disponible en la página principal hasta que lo active nuevamente.')
     return redirect(reverse('alquiler_listado'))
 
+@login_required()
 def alquiler_enable(request, id_alquiler):
     alquiler = Departamento.objects.get(id=id_alquiler)
     alquiler.estado = True
@@ -92,6 +97,7 @@ def alquiler_enable(request, id_alquiler):
     messages.success(request, 'El alquiler se ha activado correctamente. Ahora está disponible en la página principal y será visible para todos.')
     return redirect(reverse('alquiler_listado'))
 
+@login_required()
 def details(request, pk):
     form1 = ComentarioForm()
     form2 = MensajeForm()
@@ -103,6 +109,7 @@ def details(request, pk):
     }
     return render(request, 'departamentos/details.html', data)
 
+@login_required()
 def details_comentario(request, pk):
     depto = Departamento.objects.get(pk=pk)
     form = ComentarioForm(request.POST)
@@ -127,6 +134,7 @@ def details_mensaje(request, pk):
         messages.success(request, 'El mensaje se ha enviado correctamente.')
         return redirect(reverse('details', args=[pk]))
 
+@login_required()
 def uploadImagen(request, id_alquiler):
     if(Foto.objects.filter(departamento_id=id_alquiler).count() == 5):
         messages.success(request,'No puedes subir más imagenes. Has alcanzado el máximo de fotos para tu publicación (5 máx.)')
