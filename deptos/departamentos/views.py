@@ -7,11 +7,11 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Departamento, Foto, LOCALIDAD
+from django.utils import timezone
+
 from .forms import DepartamentoForm, ComentarioForm, UploadImageForm
 from usuarios.forms import MensajeForm
 
-
-import datetime
 
 def home(request):
     q = ''
@@ -109,7 +109,7 @@ def details_comentario(request, pk):
     if form.is_valid():
         comentario = form.save(commit=False)
         comentario.emisor = request.user.usuario
-        comentario.fecha_envio = datetime.datetime.now()
+        comentario.fecha_envio = timezone.now()
         comentario.departamento = depto
         comentario.save()
         messages.success(request, 'El comentario se ha publicado correctamente.')
@@ -122,7 +122,7 @@ def details_mensaje(request, pk):
         mensaje = form.save(commit=False)
         mensaje.emisor = request.user.usuario
         mensaje.receptor = depto.usuario
-        mensaje.fecha_envio = datetime.datetime.now()
+        mensaje.fecha_envio = timezone.now()
         mensaje.save()
         messages.success(request, 'El mensaje se ha enviado correctamente.')
         return redirect(reverse('details', args=[pk]))
