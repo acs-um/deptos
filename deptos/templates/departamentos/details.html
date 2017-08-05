@@ -25,8 +25,8 @@
     	<div class="container">
             {% for message in messages %}
             <div class="alert alert-success alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Felicitaciones !</strong> {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Felicitaciones !</strong> {{message}}
             </div>
         	{% endfor %}
 
@@ -65,7 +65,7 @@
                         <li><h5>Nombre: {{ depto.usuario }} ({{ depto.usuario.usuario }})</h5></li>
                         <li><h5>Telefono: {{ depto.usuario.telefono }}</h5></li>
                         <li><h5>E-mail: {{ depto.usuario.usuario.email }}</h5></li>
-                        <button type="submit" class="btn btn-theme btn-md">
+                        <button type="submit" class="btn btn-theme btn-md" data-toggle="modal" data-target="#myModal">
                             <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                             Enviar mensaje
                         </button>

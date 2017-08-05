@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from django.test import TestCase
 
-from .forms import SignUpForm
-from .models import Usuario
+from .forms import SignUpForm, MensajeForm
+from .models import Usuario, Mensaje
 
 
 class UrlUsuariosTests(TestCase):
@@ -158,3 +159,23 @@ class UsuarioMensajesTest(TestCase):
         # que usamos el template 'usuarios/inbox_panel.html'
         response = self.client.get(reverse('inbox'))
         self.assertTemplateUsed(response, 'usuarios/inbox_panel.html')
+
+    def test_enviar_mensaje(self):
+        user1 = User.objects.create(username='testuser1')
+        user1.set_password('12345')
+        user1.save()
+        user2 = User.objects.create(username='testuser2')
+        user2.set_password('12345')
+        user2.save()
+        self.client.login(username='testuser1', password='12345')
+        usuariotest1 = Usuario.objects.create(telefono="333333", direccion="dir_test1", usuario=user1)
+        usuariotest2 = Usuario.objects.create(telefono="333332", direccion="dir_test2", usuario=user2)
+        response = self.client.post(reverse('inbox'), {
+            'texto': 'MensajePrivado',
+			'emisor': usuariotest1,
+            'receptor': 'testuser2',
+			'fecha_envio': timezone.now(),
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/usuarios/inboxPanel")
+        self.assertEqual(Mensaje.objects.filter(texto="MensajePrivado").count(), 1)

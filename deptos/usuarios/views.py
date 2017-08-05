@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -13,11 +13,14 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views import generic
 from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
+from django.utils import timezone
 
-from .forms import SignUpForm, EditPerfil, SetPasswordForm
+from .forms import SignUpForm, EditPerfil, SetPasswordForm, MensajeForm
 from .models import Usuario, Mensaje
 
 from django.contrib.auth.views import login
+
 
 @login_required
 def perfil(request):
@@ -95,7 +98,31 @@ def signup(request):
 
 def usuario_listadoMensajes(request):
     mensajes = Mensaje.objects.all().order_by('fecha_envio').reverse()
-    return render(request, 'usuarios/inbox_panel.html', { 'mensajes': mensajes, 'user': request.user })
+
+    if request.method == "POST":
+        form = MensajeForm(request.POST)
+        if form.is_valid():
+            username = request.POST["receptor"]
+            if User.objects.filter(username=username):
+                receptor = User.objects.get(username=username)
+                mensaje = form.save(commit=False)
+                mensaje.emisor = request.user.usuario
+                mensaje.receptor = receptor.usuario
+                mensaje.fecha_envio = timezone.now()
+                mensaje.save()
+                messages.success(request, 'El mensaje se ha enviado correctamente.')
+            else:
+                messages.error(request, 'El nombre de usuario no existe.')
+            return redirect(reverse('inbox'))
+    else:
+        form = MensajeForm()
+
+    data = {
+        'mensajes': mensajes,
+        'user': request.user,
+        'form': form,
+    }
+    return render(request, 'usuarios/inbox_panel.html', data)
 
 class PasswordResetConfirmView(generic.FormView):
     template_name = "usuarios/reestablecer/password_reset_confirm.html"
