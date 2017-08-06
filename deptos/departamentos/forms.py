@@ -32,7 +32,7 @@ class DepartamentoForm(forms.ModelForm):
 			'longitud': forms.TextInput(attrs={'class':'form-control','readonly':'true','type':'hidden'}),
 			'capacidad': forms.Select(attrs={'class':'form-control'}),
 			'localidad': forms.Select(attrs={'class':'form-control'}),
-			'precio': forms.TextInput(attrs={'class':'form-control'}),
+			'precio': forms.TextInput(attrs={'class':'form-control','placeholder': 'Ingrese el costo de alquiler mensual, (ej: 5000)'}),
 }
 
 class ComentarioForm(forms.ModelForm):

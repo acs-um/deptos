@@ -22,12 +22,23 @@ class UrlDepartamentosTests(TestCase):
 
 class DepartamentosCrearTests(TestCase):
 
+    def setUp(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
+
+    def test_AltaDeptos_no_login(self):
+        #Al intentar crear un nuevo depto, si no estamos logueados, nos redirige al template de login
+        response = self.client.get(reverse("alquiler_crear"))
+        self.assertRedirects(response, '/ingresar/?next=/nuevoAlquiler')
+
     def test_altaDeptos_templates_used(self):
+        self.client.login(username='test1', password='12345')
         # testea que usamos el template 'departamentos/departamento_form.html'
         response = self.client.get(reverse('alquiler_crear'))
         self.assertTemplateUsed(response, 'departamentos/departamento_form.html')
 
     def test_AltaDeptos_view(self):
+        self.client.login(username='test1', password='12345')
         # datos en context de la vista
         # por get, llega el form.
         response = self.client.get(reverse('alquiler_crear'))
@@ -111,10 +122,14 @@ class Buscadordeptotest(TestCase):
 
 class DepartamentosActualizarTests(TestCase):
 
+    def setUp(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
+
     def test_editarAlquiler_templates_used(self):
         #Logueamos y creamos un usuario default...
         user = User.objects.create(username='testuser')
-        user.set_password('1234')
+        user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
@@ -129,7 +144,7 @@ class DepartamentosActualizarTests(TestCase):
     def test_editarAlquiler_context_view(self):
         #Logueamos y creamos un usuario default...
         user = User.objects.create(username='testuser')
-        user.set_password('1234')
+        user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
@@ -146,7 +161,7 @@ class DepartamentosActualizarTests(TestCase):
     def test_editarAlquiler_post(self):
         #Logueamos y creamos un usuario default...
         user = User.objects.create(username='testuser')
-        user.set_password('1234')
+        user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
@@ -172,10 +187,14 @@ class DepartamentosActualizarTests(TestCase):
 
 class DepartamentosBorradoTests(TestCase):
 
+    def setUp(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
+        
     def test_borrarAlquiler_templates_used(self):
         #Logueamos y creamos un usuario default...
         user = User.objects.create(username='testuser')
-        user.set_password('1234')
+        user.set_password('12345')
         user.save()
         self.client.login(username='testuser', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)

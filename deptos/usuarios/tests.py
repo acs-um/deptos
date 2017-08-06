@@ -124,7 +124,7 @@ class EditarDatosUsuarioTests(TestCase):
 
     def test_no_login(self):
         response = self.client.get(reverse("perfil"))
-        self.assertRedirects(response, '/?next=/usuarios/perfil')
+        self.assertRedirects(response, '/ingresar/?next=/usuarios/perfil')
 
     def test_form_edit(self):
         self.client.login(username="test1", password="12345")
