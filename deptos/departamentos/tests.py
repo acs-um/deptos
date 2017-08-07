@@ -22,22 +22,22 @@ class UrlDepartamentosTests(TestCase):
 
 class DepartamentosCrearTests(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user("test1", "test@g.com", "12345")
-        Usuario(usuario=self.user).save()
-
     def test_AltaDeptos_no_login(self):
         #Al intentar crear un nuevo depto, si no estamos logueados, nos redirige al template de login
         response = self.client.get(reverse("alquiler_crear"))
         self.assertRedirects(response, '/ingresar/?next=/nuevoAlquiler')
 
     def test_altaDeptos_templates_used(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
         self.client.login(username='test1', password='12345')
         # testea que usamos el template 'departamentos/departamento_form.html'
         response = self.client.get(reverse('alquiler_crear'))
         self.assertTemplateUsed(response, 'departamentos/departamento_form.html')
 
     def test_AltaDeptos_view(self):
+        self.user = User.objects.create_user("test1", "test@g.com", "12345")
+        Usuario(usuario=self.user).save()
         self.client.login(username='test1', password='12345')
         # datos en context de la vista
         # por get, llega el form.
@@ -47,10 +47,9 @@ class DepartamentosCrearTests(TestCase):
 
     def test_crear_alquiler(self):
         # Que se crean departamentos y se visualizan correctamente en el contexto "alquileres"...
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto nº1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
@@ -64,10 +63,9 @@ class DepartamentosCrearTests(TestCase):
     def test_altaDeptos_post(self):
         # Que llegan los datos bien por POST
         # que se crea un alquiler nuevo en la db
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         response = self.client.post(reverse('alquiler_crear'), {
             'titulo': 'testing',
@@ -122,16 +120,11 @@ class Buscadordeptotest(TestCase):
 
 class DepartamentosActualizarTests(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user("test1", "test@g.com", "12345")
-        Usuario(usuario=self.user).save()
-
     def test_editarAlquiler_templates_used(self):
         #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
 
         #Creamos un alquiler...
@@ -143,10 +136,9 @@ class DepartamentosActualizarTests(TestCase):
 
     def test_editarAlquiler_context_view(self):
         #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
 
         #Creamos un alquiler por default...
@@ -160,10 +152,9 @@ class DepartamentosActualizarTests(TestCase):
 
     def test_editarAlquiler_post(self):
         #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
 
         #Creamos un alquiler por default...
@@ -187,16 +178,11 @@ class DepartamentosActualizarTests(TestCase):
 
 class DepartamentosBorradoTests(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user("test1", "test@g.com", "12345")
-        Usuario(usuario=self.user).save()
-        
     def test_borrarAlquiler_templates_used(self):
         #Logueamos y creamos un usuario default...
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
 
         #Creamos un alquiler por default...
@@ -207,10 +193,9 @@ class DepartamentosBorradoTests(TestCase):
         self.assertTemplateUsed(response, 'departamentos/borrado_alquiler.html')
 
     def test_borrarAlquiler(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto nº1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
@@ -229,10 +214,9 @@ class DepartamentosBorradoTests(TestCase):
 class DepartamentoDisableEnableTest(TestCase):
 
     def test_DisableEnableAlquiler(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto nº1...
         alquilertest=Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
@@ -253,11 +237,10 @@ class DetalleDepartamentosTests(TestCase):
         self.assertEqual(resolve('/details/1/').view_name, 'details')
 
     def test_details_datos(self):
-        #Creo usuario
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        #Logueo con un usuario...
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         #Creo depto
         depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000,capacidad=1,precio=1000,usuario=usuariotest)
@@ -287,10 +270,9 @@ class DetalleDepartamentosTests(TestCase):
         self.assertTrue(isinstance(response.context["form2"], MensajeForm))
 
     def test_details_comentario(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         depto = Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=10.000, longitud=10.000, capacidad=1, precio=1000, usuario=usuariotest)
         response = self.client.post(reverse('details_comentario', args=[1]), {
@@ -327,10 +309,9 @@ class DetalleDepartamentosTests(TestCase):
 class Buscadordeptotest(TestCase):
 
     def test_search(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto n°1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
@@ -350,10 +331,9 @@ class Buscadordeptotest(TestCase):
 class FiltroCapacidad(TestCase):
 
     def test_capacidad(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto n°1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
@@ -373,10 +353,9 @@ class FiltroCapacidad(TestCase):
 class FiltroLocalidad(TestCase):
 
     def test_localidad(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto n°1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1",localidad="San Rafael",latitud=13.000, longitud=7.000,capacidad=1,precio=15000,usuario=usuariotest)
@@ -396,10 +375,9 @@ class FiltroLocalidad(TestCase):
 class FiltroPrecio(TestCase):
 
     def test_precio(self):
-        user = User.objects.create(username='testuser')
-        user.set_password('12345')
+        user = User.objects.create_user("test1", "test@g.com", "12345")
         user.save()
-        self.client.login(username='testuser', password='12345')
+        self.client.login(username='test1', password='12345')
         usuariotest = Usuario.objects.create(telefono="333333", direccion="dir_test", usuario=user)
         # Creo depto n°1..
         Departamento.objects.create(titulo="titulo1", descripcion="descrip1", localidad="San Rafael", latitud=13.000, longitud=7.000,capacidad=1,precio=10000,usuario=usuariotest)
